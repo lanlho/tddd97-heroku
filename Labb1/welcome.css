@@ -1,0 +1,50 @@
+body {
+  margin-top: 100px;
+  background-color:blue;
+}
+.welcome {
+  width: 600px;
+  height: 400px;
+  margin:0 auto;
+  border: 2px solid green;
+
+}
+.logoClass {
+  border: 2px dashed black;
+/*  margin-top: 100px;*/
+/*  margin-left: 50%;*/
+  width: 340px;
+  height:400px;
+  float: left;
+  /*position: relative;*/
+}
+.loginBox {
+  background-color:white;
+/*  margin-right: 50%;*/
+  border: 2px dashed black;
+  /*margin-top:100px;*/
+  margin-left:350px;
+/*  padding-left: 10px;*/
+  width: 250px;
+  height:100px;
+  text-align: right;
+  /*position:relative;*/
+}
+
+.signupBox {
+  background-color:white;
+  border: 2px dashed black;
+  margin-top:10px;
+  margin-left:350px;
+  width: 250px;
+  height:285px;
+  font-size: 14px;
+  text-align: right;
+}
+form-label {
+  float: left;
+}
+select {
+  float:right;
+  width: 67%;
+}
