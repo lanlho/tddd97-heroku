@@ -12,11 +12,11 @@
 
   <div class="loginBox">
     Log in<br>
-    <form action="#" method="get">
+    <form action="#" onsubmit="validateLogIn()">
     <form-label>Email:</form-label>
-    <input type="email" name="email" required><br>
+    <input type="text" name="logEm" id="Logger" required><br>
       <form-label>Password:</form-label>
-      <input type="password" name="logPass"><br>
+      <input type="password" name="logPass" id="Passer" required><br>
       <input type="submit" value="Submit">
       </form>
   </div>
@@ -41,9 +41,9 @@
       <form-label>Email:</form-label>
       <input type="text" name="email" required><br>
       <form-label>Password:</form-label>
-      <input type="password" name="pass" required><br>
+      <input type="password" name="pass" id="pass" required><br>
       <form-label>Repeat PSW:</form-label>
-      <input type="password" name="rptpass" oninput="passwordVaildate()" required><br>
+      <input type="password" name="rptpass" id="rptpass" oninput="passwordVaildate()" required><br>
       <p id="wrongPass"></p>
       <input type="submit" value="Submit">
     </form>

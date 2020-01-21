@@ -45,10 +45,16 @@ body {
 form-label {
   float: left;
   margin-top:4px;
+  margin-left: 2px;
 }
 select {
   float:right;
   width: 67%;
+}
 
-
+ #wrongPass {
+  color:red;
+  text-align: left;
+  margin-left:2px;
+  width:auto;
 }
