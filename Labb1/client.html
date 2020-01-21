@@ -14,19 +14,20 @@
     Log in<br>
     <form action="#" method="get">
     <form-label>Email:</form-label>
-    <input type="text" name="email"><br>
+    <input type="email" name="email" required><br>
       <form-label>Password:</form-label>
       <input type="password" name="logPass"><br>
       <input type="submit" value="Submit">
+      </form>
   </div>
 
   <div class="signupBox">
      Sign up here: <br>
-    <form  action="#" method="post"><br>
+    <form  action="#" method="get" onsubmit="validateSignUp()"><br>
       <form-label>First name:</form-label>
-      <input type="text" name="fName" ><br>
+      <input type="text" name="fName" required ><br>
       <form-label>Family name:</form-label>
-      <input type="text" name="famName"><br>
+      <input type="text" name="famName" required><br>
       <form-label>Gender:</form-label>
         <select name="genders">
         <option value="male">Male</option>
@@ -34,15 +35,16 @@
         <option value="female">Female</option>
       </select><br>
       <form-label>City:</form-label>
-      <input type="text" name="city"><br>
+      <input type="text" name="city" required><br>
       <form-label>Country:</form-label>
-      <input type="text" name="country"><br>
+      <input type="text" name="country" required><br>
       <form-label>Email:</form-label>
-      <input type="email" name="email"><br>
+      <input type="email" name="email" required><br>
       <form-label>Password:</form-label>
-      <input type="password" name="pass"><br>
+      <input type="password" name="pass" required><br>
       <form-label>Repeat PSW:</form-label>
-      <input type="password" name="pass"><br>
+      <input type="password" name="rptpass" oninput="passwordVaildate()" required><br>
+      <p id="wrongPass"></p>
       <input type="submit" value="Submit">
     </form>
   </div>
