@@ -41,6 +41,7 @@ body {
   height:290px;
   font-size: 14px;
   text-align: right;
+
 }
 form-label {
   float: left;
@@ -52,9 +53,21 @@ select {
   width: 67%;
 }
 
+
+.HotFixIsHot {
+  display:inline-block;
+  width: 250px;
+  /*flex-direction: horizontal;*/
+}
+
  #wrongPass {
   color:red;
   text-align: left;
   margin-left:2px;
-  width:auto;
+  float:left;
+
+}
+#NoMove {
+  margin-top: 4%;
+
 }

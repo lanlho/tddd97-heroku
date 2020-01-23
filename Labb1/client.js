@@ -24,8 +24,7 @@ passwordVaildate = function () {
   var rptpass = document.getElementById('rptpass');
   if (pass1.value !== rptpass.value) {
     document.getElementById('wrongPass').innerHTML = "Passwords don't match!";
-    //alert('Nu blire knas');
   } else {
-    document.getElementById('wrongPass').innerHTML = "";
+    document.getElementById('wrongPass').innerHTML = '';
   }
 };
