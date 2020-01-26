@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <link href="client.css"type="text/css"rel="stylesheet">
@@ -11,7 +12,7 @@
   </div>
 
   <div class="loginBox">
-    Log in<br>
+    Log in <br>
     <form action="#" onsubmit="validateLogIn()">
     <form-label>Email:</form-label>
     <input type="text" name="logEm" id="Logger" required><br>
@@ -29,9 +30,8 @@
       <form-label>Family name:</form-label>
       <input type="text" name="famName" required><br>
       <form-label>Gender:</form-label>
-        <select name="genders">
+        <select name="genders" required>
         <option value="male">Male</option>
-        <option value="NaN">Something in between</option>
         <option value="female">Female</option>
       </select><br>
       <form-label>City:</form-label>
@@ -62,5 +62,6 @@
 </script>
 </head>
 <body id="body">
+
 </body>
 </html>

@@ -19,7 +19,8 @@ body {
   /*position: relative;*/
 }
 .loginBox {
-    font-size: 14px;
+
+  font-size: 14px;
   background-color:white;
 /*  margin-right: 50%;
   border: 2px dashed black;*/
@@ -28,7 +29,7 @@ body {
 /*  padding-left: 10px;*/
   width: 250px;
   height:100px;
-  text-align: right;
+  text-align: left;
   /*position:relative;*/
 }
 

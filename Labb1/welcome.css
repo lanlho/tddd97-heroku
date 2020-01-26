@@ -1,12 +1,12 @@
 body {
   margin-top: 100px;
-  background-color:blue;
+  background-color:lightblue;
 }
 .welcome {
-  width: 600px;
-  height: 400px;
+  width: 604px;
+  height: 404px;
   margin:0 auto;
-  border: 2px solid green;
+  border: 2px solid blue;
 
 }
 .logoClass {
@@ -19,28 +19,30 @@ body {
   /*position: relative;*/
 }
 .loginBox {
-    font-size: 14px;
+  padding: 15px;
+  font-size: 14px;
   background-color:white;
 /*  margin-right: 50%;*/
   border: 2px dashed black;
   /*margin-top:100px;*/
   margin-left:350px;
 /*  padding-left: 10px;*/
-  width: 250px;
-  height:100px;
-  text-align: right;
+  width: 220px;
+  height:85px;
+  text-align: left;
   /*position:relative;*/
 }
 
 .signupBox {
+  padding: 15px;
   background-color:white;
   border: 2px dashed black;
   margin-top:10px;
   margin-left:350px;
-  width: 250px;
-  height:285px;
+  width: 220px;
+  height:241px;
   font-size: 14px;
-  text-align: right;
+  text-align: left;
 }
 form-label {
   float: left;
@@ -49,6 +51,8 @@ form-label {
 select {
   float:right;
   width: 67%;
+
+}
 
 
 }
