@@ -54,17 +54,17 @@ select {
 
 }
 
-#LoginBox {
+.LoginBox {
   font-size:100%;
   width:80%;
 }
 
-#LoginButton {
+.LoginButton {
   float: right;
   margin-right: 13%;
 }
 
-#textBox {
+.textBox {
   /*font-size: 75%;*/
   height:5%;
   width: 80%;

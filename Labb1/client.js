@@ -6,7 +6,7 @@ window.onload = function () {
   //Stänga ner sidan och fortfarande vara inloggad så att Säga.
 };
 
-function validateLogIn() {
+/*function validateLogIn() {
   var ema = document.getElementById('Logger');
   var pas = document.getElementById('Passer');
   if (ema.value === pas.value) {
@@ -27,4 +27,4 @@ passwordVaildate = function () {
   } else {
     document.getElementById('wrongPass').innerHTML = '';
   }
-};
+};*/
