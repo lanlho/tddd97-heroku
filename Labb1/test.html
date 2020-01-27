@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="client.css"type="text/css"rel="stylesheet">
+<script src="client.js"type="text/javascript"></script>
+<script src="serverstub.js"type="text/javascript"></script>
+<!-- WELCOME VIEW -->
+<script id="welcomeView" type="text/view" >
+  <div class="welcome">
+    <div class="logoClass">
+      <img src="wimage.png"></img>
+  </div>
+
+  <div class="loginBox">
+    Log in <br>
+    <form action="#" onsubmit="validateLogIn()">
+    <form-label>Email:</form-label>
+    <input type="text" name="logEm" id="Logger" required><br>
+      <form-label>Password:</form-label>
+      <input type="password" name="logPass" id="Passer" required><br>
+      <input type="submit" value="Submit">
+      </form>
+  </div>
+
+  <div class="signupBox">
+     Sign up here: <br>
+    <form  action="#" onsubmit="validateSignUp()"><br>
+      <form-label>First name:</form-label>
+      <input type="text" name="fName" required ><br>
+      <form-label>Family name:</form-label>
+      <input type="text" name="famName" required><br>
+      <form-label>Gender:</form-label>
+        <select name="genders" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select><br>
+      <form-label>City:</form-label>
+      <input type="text" name="city" required><br>
+      <form-label>Country:</form-label>
+      <input type="text" name="country" required><br>
+      <form-label>Email:</form-label>
+      <input type="text" name="email" required><br>
+      <form-label>Password:</form-label>
+      <input type="password" name="pass" id="pass" required><br>
+      <form-label>Repeat PSW:</form-label>
+      <input type="password" name="rptpass" id="rptpass" oninput="passwordVaildate()" required><br>
+      <div class='HotFixIsHot'>
+      <p id="wrongPass"></p>
+      <button type="submit" value="Submit" id="NoMove">Send</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+</script>
+<!-- END OF WELCOME VIEW -->
+
+<!-- PROFILE VIEW ------>
+<script type="text/view" id="profileView">
+  <p>This is an arbitrary line</p>
+</script>
+</head>
+<body id="body">
+
+</body>
+</html>

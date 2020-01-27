@@ -1,16 +1,16 @@
 body {
   margin-top: 100px;
-  background-color:lightblue;
+  background-color:blue;
 }
 .welcome {
   width: 600px;
   height: 400px;
   margin:0 auto;
-  border: 2px solid red;
+/*  border: 2px solid green;*/
 
 }
 .logoClass {
-  border: 2px dashed black;
+/*  border: 2px dashed black;
 /*  margin-top: 100px;*/
 /*  margin-left: 50%;*/
   width: 340px;
@@ -19,53 +19,56 @@ body {
   /*position: relative;*/
 }
 .loginBox {
-/*  padding: 15px;*/
+
   font-size: 14px;
   background-color:white;
-/*  margin-right: 50%;*/
-  /*border: 2px dashed black;
+/*  margin-right: 50%;
+  border: 2px dashed black;*/
   /*margin-top:100px;*/
   margin-left:350px;
 /*  padding-left: 10px;*/
   width: 250px;
-  height:125px;
+  height:100px;
   text-align: left;
   /*position:relative;*/
 }
 
 .signupBox {
-  /*padding: 15px;*/
   background-color:white;
-  border: 2px dashed black;
+/*  border: 2px dashed black;*/
   margin-top:10px;
   margin-left:350px;
   width: 250px;
-  height:265px;
+  height:290px;
   font-size: 14px;
-  text-align: left;
+  text-align: right;
+
 }
 form-label {
   float: left;
   margin-top:4px;
+  margin-left: 2px;
 }
 select {
   float:right;
   width: 67%;
-
 }
 
-#LoginBox {
-  font-size:100%;
-  width:80%;
+
+.HotFixIsHot {
+  display:inline-block;
+  width: 250px;
+  /*flex-direction: horizontal;*/
 }
 
-#LoginButton {
-  float: right;
-  margin-right: 13%;
-}
+ #wrongPass {
+  color:red;
+  text-align: left;
+  margin-left:2px;
+  float:left;
 
-#textBox {
-  /*font-size: 75%;*/
-  height:5%;
-  width: 80%;
+}
+#NoMove {
+  margin-top: 4%;
+
 }

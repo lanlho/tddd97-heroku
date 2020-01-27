@@ -1,67 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="client.css"type="text/css"rel="stylesheet">
-<script src="client.js"type="text/javascript"></script>
-<script src="serverstub.js"type="text/javascript"></script>
-<!-- WELCOME VIEW -->
-<script id="welcomeView" type="text/view" >
-  <div class="welcome">
-    <div class="logoClass">
-      <img src="wimage.png"></img>
+  <!--
+  A <meta> viewport element gives the browser instructions on how to control the page's dimensions and scaling.
+  The width=device-width part sets the width of the page to follow the screen-width of the device (which will vary depending on the device).
+  The initial-scale=1.0 part sets the initial zoom level when the page is first loaded by the browser.
+-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="client.css" type="text/css" rel="stylesheet">
+<script src="client.js" type="text/javascript"></script>
+<script src="serverstub.js" type="text/javascript"></script>
+
+<script id="welcomeView" type="text/view">
+<div class="welcome">
+  <div class="logoClass">
+    <img src="wimage.png" alt=""></img>
+  </div>
+<!-- INGEN STYLING I HTML-FILEN -->
+  <div class="loginBox">
+    <b> Log in </b> <br><br>
+    <form action="#" method="get">
+    <input type="email" name="email" placeholder="Email" id="LoginBox"><br>
+    <input type="password" name="logPass" placeholder="Password" id="LoginBox"><br>
+    <input type="submit" value="Log in" id="LoginButton">
   </div>
 
-  <div class="loginBox">
-    Log in <br>
-    <form action="#" onsubmit="validateLogIn()">
-    <form-label>Email:</form-label>
-    <input type="text" name="logEm" id="Logger" required><br>
-      <form-label>Password:</form-label>
-      <input type="password" name="logPass" id="Passer" required><br>
-      <input type="submit" value="Submit">
-      </form>
-  </div>
 
   <div class="signupBox">
-     Sign up here: <br>
-    <form  action="#" onsubmit="validateSignUp()"><br>
-      <form-label>First name:</form-label>
-      <input type="text" name="fName" required ><br>
-      <form-label>Family name:</form-label>
-      <input type="text" name="famName" required><br>
-      <form-label>Gender:</form-label>
-        <select name="genders" required>
+     <b> Sign up here </b>
+    <form  action="#" method="post"><br>
+      <!--<form-label>First name:</form-label> -->
+      <input type="text" name="fName" placeholder="First name" id="textBox"><br>
+      <input type="text" name="famName" placeholder="Family name" id="textBox"><br style="line-height:25px;"/>
+      <!--<form-label>Gender:</form-label>
+        <select name="genders">
         <option value="male">Male</option>
         <option value="female">Female</option>
-      </select><br>
-      <form-label>City:</form-label>
-      <input type="text" name="city" required><br>
-      <form-label>Country:</form-label>
-      <input type="text" name="country" required><br>
-      <form-label>Email:</form-label>
-      <input type="text" name="email" required><br>
-      <form-label>Password:</form-label>
-      <input type="password" name="pass" id="pass" required><br>
-      <form-label>Repeat PSW:</form-label>
-      <input type="password" name="rptpass" id="rptpass" oninput="passwordVaildate()" required><br>
-      <div class='HotFixIsHot'>
-      <p id="wrongPass"></p>
-      <button type="submit" value="Submit" id="NoMove">Send</button>
-      </div>
+      </select><br><br>-->
+      <!--form action="/action_page.php">-->
+      <label> Sex:  </label> <br>
+      <input type="radio" name="gender" value="male"> <label>Male</label>
+      <input type="radio" name="gender" value="female"> <label>Female</label><br style="line-height:25px;"/>
+      <!--</form>-->
+      <input type="text" name="city" placeholder="City" id="textBox"><br>
+      <input type="text" name="country" placeholder="Country" id="textBox"><br>
+      <input type="email" name="email" placeholder="Email" id="textBox"><br>
+      <input type="password" name="pass" placeholder="Password" id="textBox"><br>
+      <input type="password"  name="pass" placeholder="Repeat password" id="textBox"><br>
+      <input type="submit" value="Sign up" id="LoginButton">
+
+
     </form>
   </div>
 </div>
-
-
-</script>
-<!-- END OF WELCOME VIEW -->
-
-<!-- PROFILE VIEW ------>
-<script type="text/view" id="profileView">
-  <p>This is an arbitrary line</p>
 </script>
 </head>
+
 <body id="body">
+
+
 
 </body>
 </html>
