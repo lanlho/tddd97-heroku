@@ -1,6 +1,7 @@
 window.onload = function () {
   welcomeView = document.getElementById('welcomeView');
   document.getElementById('body').innerHTML = welcomeView.innerHTML;
+  document.getElementById("SignUpButton").disabled = true;
 
   //Mja, det här funkar ju SO FAR men vi kommer behöva ändra när man ska kunna
   //Stänga ner sidan och fortfarande vara inloggad så att Säga.
@@ -14,6 +15,24 @@ window.onload = function () {
   } else {
     alert('Not samesies');
   }
+} */
+
+ function passLength(pass)
+{
+	var pass1 = document.getElementById(pass);
+	if (pass1.value.length < 3 )
+	{
+		document.getElementById("shortyPassword").innerHTML = "Your password is too short :O";
+		return false;
+	}
+	else
+	{
+		document.getElementById("shortyPassword").innerHTML = "";
+		return true;
+	}
+			return true;
+
+	
 }
 
 passwordVaildate = function () {
@@ -26,5 +45,9 @@ passwordVaildate = function () {
     document.getElementById('wrongPass').innerHTML = "Passwords don't match!";
   } else {
     document.getElementById('wrongPass').innerHTML = '';
+	if (passLength("rptpass") == true) {
+	document.getElementById("SignUpButton").disabled = false;
+	}
+
   }
-};*/
+};
