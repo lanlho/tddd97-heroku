@@ -30,20 +30,23 @@
 
   <div class="signupBox">
      <b> Sign up here </b>
-    <form action="#" method="get">
+     <form action="#" method="get" > 
       <input type="email" name="email" placeholder="Email" class="textBox" required><br>
-      <input type="text" name="fName" placeholder="First name" class="textBox" required><br>
-      <input type="text" name="famName" placeholder="Family name" class="textBox" required><br>
+      <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
+      <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br>
        <label> Sex:  </label>
       <input type="radio" name="gender" value="male" required> <label>Male</label>
       <input type="radio" name="gender" value="female"> <label>Female</label><br>
       <input type="text" name="city" placeholder="City" class="textBox"required ><br>
       <input type="text" name="country" placeholder="Country" class="textBox" required  ><br>
-      <input type="password" name="pass" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass')" required><br>
-      <p id="shortyPassword"></p>
+      <input type="password" name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass')" required><br>
       <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordVaildate()" required><br>
-      <p id="wrongPass"></p>
-      <input type="submit" value="Log in" class="LoginButton" id="SignUpButton">
+      <div class="containStuff">
+        <input type="submit" value="Log in" class="LoginButton" id="SignUpButton" onclick="sendForm(this.form)">
+        <p id="wrongPass"></p>
+        <p id="shortyPassword"></p>
+        <p id="test"></p>
+      </div>
     </form>
 
   </div>

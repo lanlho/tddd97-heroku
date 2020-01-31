@@ -51,3 +51,14 @@ passwordVaildate = function () {
 
   }
 };
+
+sendForm = function(dataObject)
+{
+	//TODO:		Ändra namn på snopp-variablen.
+	var swag = {email:dataObject.email.value, password:dataObject.password.value, firstname:dataObject.firstname.value, familyname:dataObject.familyname.value
+		,gender:dataObject.gender.value, city:dataObject.city.value, country:dataObject.country.value};
+	var snopp = serverstub.signUp(swag);
+	alert(snopp.success + " " + snopp.message);
+	document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
+	
+};
