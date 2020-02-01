@@ -1,21 +1,23 @@
 window.onload = function () {
-  welcomeView = document.getElementById('welcomeView');
-  document.getElementById('body').innerHTML = welcomeView.innerHTML;
-  document.getElementById("SignUpButton").disabled = true;
-
-  //Mja, det här funkar ju SO FAR men vi kommer behöva ändra när man ska kunna
-  //Stänga ner sidan och fortfarande vara inloggad så att Säga.
+  if (window.location.hash.split('#')[1]){
+    profileView()
+  }
 };
 
-/*function validateLogIn() {
-  var ema = document.getElementById('Logger');
-  var pas = document.getElementById('Passer');
-  if (ema.value === pas.value) {
-    alert('Samesies');
+function logIn() {
+  var login = document.getElementById('loginInput').value
+  var password = document.getElementById('passwordInput').value
+  var response = serverstub.signIn(login, password)
+  //response: (success, message, data)
+
+  if (response.success == true){
+    //logged in
+    window.location.href = '#' + response.data
+    profileView();
   } else {
-    alert('Not samesies');
+    //failed to log in
   }
-} */
+}
 
  function passLength(pass)
 {
@@ -30,9 +32,7 @@ window.onload = function () {
 		document.getElementById("shortyPassword").innerHTML = "";
 		return true;
 	}
-			return true;
-
-	
+		return true;
 }
 
 passwordVaildate = function () {
@@ -54,11 +54,31 @@ passwordVaildate = function () {
 
 sendForm = function(dataObject)
 {
-	//TODO:		Ändra namn på snopp-variablen.
+	//TODO:		Ändra namn på snopp och swag-variablen.
 	var swag = {email:dataObject.email.value, password:dataObject.password.value, firstname:dataObject.firstname.value, familyname:dataObject.familyname.value
 		,gender:dataObject.gender.value, city:dataObject.city.value, country:dataObject.country.value};
 	var snopp = serverstub.signUp(swag);
 	alert(snopp.success + " " + snopp.message);
 	document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
-	
+
 };
+
+
+//                  profile js
+
+
+function profileView() {
+
+  var token = window.location.hash.split('#')[1];
+
+  document.getElementById('welcomeView').hidden = true
+  document.getElementById('profileView').hidden = false
+
+    //Profile view
+    document.getElementById("homebutton").onclick = home;
+    document.getElementById("browsebutton").onclick = browse;
+    document.getElementById("accountbutton").onclick = account;
+
+    //Logout
+    document.getElementById("signoutbutton").onclick = logout;
+}

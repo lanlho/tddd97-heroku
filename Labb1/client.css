@@ -2,9 +2,11 @@ body {
   margin-top: 100px;
   background-color:lightblue;
 }
+
+
 .welcome {
   width: 600px;
-  height: 400px;
+  height: 404px;
   margin:0 auto;
   border: 2px solid red;
 
@@ -23,13 +25,13 @@ body {
   font-size: 14px;
   background-color:white;
 /*  margin-right: 50%;*/
-  /*border: 2px dashed black;
+  border: 2px dashed black;
   /*margin-top:100px;*/
   margin-left:350px;
 /*  padding-left: 10px;*/
-  width: 250px;
-  height:125px;
-  text-align: left;
+  width: 246px;
+  height:121px;
+  text-align: center;
   /*position:relative;*/
 }
 
@@ -42,7 +44,7 @@ body {
   width: 246px;
   height:265px;
   font-size: 14px;
-  text-align: left;
+  text-align: center;
 }
 form-label {
   float: left;
@@ -68,4 +70,18 @@ select {
   /*font-size: 75%;*/
   height:5%;
   width: 80%;
+}
+
+/*          profile css */
+
+ul {
+    width: 100%;
+    float: left;
+    margin: 0;
+    padding: 0px 0 0 0;
+}
+
+li {
+    list-style: none;
+    line-height: 15px;
 }
