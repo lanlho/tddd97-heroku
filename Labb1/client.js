@@ -1,4 +1,5 @@
 window.onload = function () {
+  document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('welcomeView').innerHTML;
   if (window.location.hash.split('#')[1]){
     profileView()
   }
@@ -19,20 +20,20 @@ function logIn() {
   }
 }
 
- function passLength(pass)
+function passLength(pass)
 {
-	var pass1 = document.getElementById(pass);
-	if (pass1.value.length < 3 )
-	{
-		document.getElementById("shortyPassword").innerHTML = "Your password is too short :O";
-		return false;
-	}
-	else
-	{
-		document.getElementById("shortyPassword").innerHTML = "";
-		return true;
-	}
-		return true;
+  var pass1 = document.getElementById(pass);
+  if (pass1.value.length < 3 )
+  {
+    document.getElementById("shortyPassword").innerHTML = "Your password is too short :O";
+    return false;
+  }
+  else
+  {
+    document.getElementById("shortyPassword").innerHTML = "";
+    return true;
+  }
+  return true;
 }
 
 passwordVaildate = function () {
@@ -45,34 +46,36 @@ passwordVaildate = function () {
     document.getElementById('wrongPass').innerHTML = "Passwords don't match!";
   } else {
     document.getElementById('wrongPass').innerHTML = '';
-	if (passLength("rptpass") == true) {
-	document.getElementById("SignUpButton").disabled = false;
-	}
+    if (passLength("rptpass") == true) {
+      document.getElementById("SignUpButton").disabled = false;
+    }
 
   }
 };
 
-sendForm = function(dataObject)
-{
-	//TODO:		Ändra namn på snopp och swag-variablen.
-	var swag = {email:dataObject.email.value, password:dataObject.password.value, firstname:dataObject.firstname.value, familyname:dataObject.familyname.value
-		,gender:dataObject.gender.value, city:dataObject.city.value, country:dataObject.country.value};
-	var snopp = serverstub.signUp(swag);
-	alert(snopp.success + " " + snopp.message);
-	document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
+function sendForm(dataObject){
+  //TODO:		Ändra namn på snopp och swag-variablen.
+  var swag = {
+      email:dataObject.email.value,
+      password:dataObject.password.value,
+      firstname:dataObject.firstname.value,
+      familyname:dataObject.familyname.value,
+      gender:dataObject.gender.value,
+      city:dataObject.city.value,
+      country:dataObject.country.value
+    };
 
-};
+    var snopp = serverstub.signUp(swag);
+    alert(snopp.success + " " + snopp.message);
+    document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
+  }
 
 
-//                  profile js
+  function profileView() {
 
+    var token = window.location.hash.split('#')[1];
 
-function profileView() {
-
-  var token = window.location.hash.split('#')[1];
-
-  document.getElementById('welcomeView').hidden = true
-  document.getElementById('profileView').hidden = false
+    document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('profileView').innerHTML;
 
     //Profile view
     document.getElementById("homebutton").onclick = home;
@@ -81,4 +84,4 @@ function profileView() {
 
     //Logout
     document.getElementById("signoutbutton").onclick = logout;
-}
+  }

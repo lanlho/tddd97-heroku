@@ -12,61 +12,62 @@
 <script src="client.js" type="text/javascript"></script>
 <script src="serverstub.js"></script>
 
-</head>
-<!--textbox-->
-<body id="body">
-  <div id="welcomeView">
-    <div class="welcome">
-      <div class="logoClass">
-        <img src="wimage.png" alt=""></img>
-      </div>
-    <!-- INGEN STYLING I HTML-FILEN -->
-      <div class="loginBox"><br>
-        <b> Log in </b> <br>
-        <form action="#" method="get">
-        <input id="loginInput" type="email" name="email" placeholder="Email" class="LoginBox" required><br>
-        <input id="passwordInput" type="password" name="logPass" placeholder="Password" class="LoginBox" required><br>
-        <input type="submit" value="Log in" class="LoginButton" onclick="logIn()">
-        </form>
-      </div>
+<script id="welcomeView" type="text/view">
+  <div class="welcome">
+    <div class="logoClass">
+      <img src="wimage.png" alt=""></img>
+    </div>
+  <!-- INGEN STYLING I HTML-FILEN -->
+    <div class="loginBox"><br>
+      <b> Log in </b> <br>
+      <form action="#" method="get">
+      <input id="loginInput" type="email" name="email" placeholder="Email" class="LoginBox" required><br>
+      <input id="passwordInput" type="password" name="logPass" placeholder="Password" class="LoginBox" required><br>
+      <input type="submit" value="Log in" class="LoginButton" onclick="logIn()">
+      </form>
+    </div>
 
 
-      <div class="signupBox"><br>
-         <b> Sign up here </b>
-         <form action="#" method="get" >
-          <input type="email" name="email" placeholder="Email" class="textBox" required><br>
-          <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
-          <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br><br>
-           <label> Sex:  </label>
-          <input type="radio" name="gender" value="male" required> <label>Male</label>
-          <input type="radio" name="gender" value="female"> <label>Female</label><br><br>
-          <input type="text" name="city" placeholder="City" class="textBox"required ><br>
-          <input type="text" name="country" placeholder="Country" class="textBox" required  ><br>
-          <input type="password" name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass')" required><br>
-          <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordVaildate()" required><br>
-          <div class="containStuff">
-            <input type="submit" value="Sign up" class="LoginButton" id="SignUpButton" onclick="sendForm(this.form)">
-            <p id="wrongPass"></p>
-            <p id="shortyPassword"></p>
-            <p id="test"></p>
-          </div>
-        </form>
-      </div>
+    <div class="signupBox"><br>
+       <b> Sign up here </b>
+       <form action="#" method="get" >
+        <input type="email" name="email" placeholder="Email" class="textBox" required><br>
+        <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
+        <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br><br>
+         <label> Sex:  </label>
+        <input type="radio" name="gender" value="male" required> <label>Male</label>
+        <input type="radio" name="gender" value="female"> <label>Female</label><br><br>
+        <input type="text" name="city" placeholder="City" class="textBox"required ><br>
+        <input type="text" name="country" placeholder="Country" class="textBox" required  ><br>
+        <input type="password" name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass')" required><br>
+        <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordVaildate()" required><br>
+        <div class="containStuff">
+          <input type="submit" value="Sign up" class="LoginButton" id="SignUpButton" onclick="sendForm(this.form)">
+          <p id="wrongPass"></p>
+          <p id="shortyPassword"></p>
+          <p id="test"></p>
+        </div>
+      </form>
     </div>
   </div>
-  <!--               profile html           -->
-   <div id="profileView" hidden>
-      <div class="layout">
-          <div class="menutab">
-              <ul>
-                  <li></li>
-                  <li><a href="#" id="homebutton" class="tablinks">Home</a></li>
-                  <li><a href="#" id="browsebutton" class="tablinks">Browse</a></li>
-                  <li><a href="#" id="accountbutton" class="tablinks">Account</a></li>
-                  <li><a href="#" id="signoutbutton" class="logout">Log out</a></li>
-              </ul>
-          </div>
+</script>
+
+<script id="profileView" type="text/view">
+    <div class="layout">
+        <div class="menutab">
+            <ul>
+                <li></li>
+                <li><a href="#" id="homebutton" class="tablinks">Home</a></li>
+                <li><a href="#" id="browsebutton" class="tablinks">Browse</a></li>
+                <li><a href="#" id="accountbutton" class="tablinks">Account</a></li>
+                <li><a href="#" id="signoutbutton" class="logout">Log out</a></li>
+            </ul>
         </div>
-  </div>
+      </div>
+</script>
+
+</head>
+<!--textbox-->
+<body>
 </body>
 </html>
