@@ -1,22 +1,24 @@
 window.onload = function () {
   document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('welcomeView').innerHTML;
+  document.getElementById("SignUpButton").disabled = true;
   if (window.location.hash.split('#')[1]){
-    profileView()
+    profileView();
   }
 };
 
 function logIn() {
-  var login = document.getElementById('loginInput').value
-  var password = document.getElementById('passwordInput').value
-  var response = serverstub.signIn(login, password)
+  var login = document.getElementById('loginInput').value;
+  var password = document.getElementById('passwordInput').value;
+  var response = serverstub.signIn(login, password);
   //response: (success, message, data)
 
   if (response.success == true){
     //logged in
-    window.location.href = '#' + response.data
+    window.location.href = '#' + response.data;
     profileView();
   } else {
     //failed to log in
+    document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
   }
 }
 
@@ -25,15 +27,16 @@ function passLength(pass)
   var pass1 = document.getElementById(pass);
   if (pass1.value.length < 3 )
   {
-    document.getElementById("shortyPassword").innerHTML = "Your password is too short :O";
+    document.getElementById('passwordError').innerHTML = "Your password is too short :O";
+    document.getElementById("SignUpButton").disabled = true;
     return false;
   }
   else
   {
-    document.getElementById("shortyPassword").innerHTML = "";
+    document.getElementById('passwordError').innerHTML = "";
+    passwordVaildate();
     return true;
   }
-  return true;
 }
 
 passwordVaildate = function () {
@@ -43,12 +46,18 @@ passwordVaildate = function () {
   var pass1 = document.getElementById('pass');
   var rptpass = document.getElementById('rptpass');
   if (pass1.value !== rptpass.value) {
-    document.getElementById('wrongPass').innerHTML = "Passwords don't match!";
-  } else {
-    document.getElementById('wrongPass').innerHTML = '';
-    if (passLength("rptpass") == true) {
+    document.getElementById('passwordError').innerHTML = "Passwords don't match!";
+  }
+  else if (rptpass.value.length < 3)
+  {
+    document.getElementById('passwordError').innerHTML = "Your password is too short :O";
+    document.getElementById("SignUpButton").disabled = true;
+  }
+  else {
+    document.getElementById('passwordError').innerHTML = '';
+  //  if (passLength("rptpass") == true) {
       document.getElementById("SignUpButton").disabled = false;
-    }
+    //}
 
   }
 };
@@ -84,4 +93,16 @@ function sendForm(dataObject){
 
     //Logout
     document.getElementById("signoutbutton").onclick = logout;
+  }
+
+  //For the PROFILE VIEW
+  //Tab switching
+
+  function changeTab(tabId)
+  {
+    //document.getElementById(tabId).style.backgroundColor = "lightgreen";
+    document.getElementById("homebutton").className="deselected";
+    document.getElementById("browsebutton").className="deselected";
+    document.getElementById("accountbutton").className="deselected";
+    document.getElementById(tabId).className="selected";
   }
