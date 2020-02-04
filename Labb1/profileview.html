@@ -18,15 +18,27 @@
       <div class="menutab">
           <ul>
               <li></li>
-              <li id="homebutton" class="selected" onclick="changeTab(this.id)"><a href="#">Home</a></li>
-              <li id="browsebutton" class="deselected" onclick="changeTab(this.id)"><a href="#">Browse</a></li>
-              <li id="accountbutton" class="deselected" onclick="changeTab(this.id)"><a href="#">Account</a></li>
-              <li id="signoutbutton" class="logout deselected" onclick="changeTab(this.id)" ><a href="#">Log out</a></li>
+              <li id="homebutton" class="selected" onclick="changeUpperTab(this.id)"><a href="#">Home</a></li>
+              <li id="browsebutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Browse</a></li>
+              <li id="accountbutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Account</a></li>
+              <li id="signoutbutton" class="logout deselected" onclick="changeUpperTab(this.id)" ><a href="#">Log out</a></li>
           </ul>
       </div>
-      <div class="homeTab"></div>
-      <div class="browseTab"></div>
-      <div class="accountTab"></div>
+      <div id="containerArea">
+      <div id="homeTab"><p>This is HOME</p></div>
+      <div id="browseTab"><p>This is BROWSE</p></div>
+      <div id="accountTab">
+          <b>This is ACCOUNT</b><br />
+          <p>u wish to change password? Do so here:</p>
+          <form action="javascript:void" method="get" onsubmit="changeThisPassword(this.form)">
+              <input type="password" name="oldpassword" placeholder="Old Password" class="textBox" id="olePass" required><br>
+              <input type="password" name="newpassword" placeholder="New Password" class="textBox" id="newPass" oninput="passLength('newPass', 'newRepeatPass')" required><br>
+              <input type="password" name="passe" placeholder="Repeat password" class="textBox" id="newRepeatPass" oninput="passwordValidate('newPass', 'newRepeatPass')" required><br>
+              <input type="submit" value="Sign up" class="LoginButton" id="changePassword">
+              <p id="passwordError"></p>
+          </form>
+      </div>
+      </div>
     </div>
 </body>
 </html>

@@ -1,30 +1,23 @@
 window.onload = function () {
-  document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('welcomeView').innerHTML;
-  document.getElementById("SignUpButton").disabled = true;
-  if (window.location.hash.split('#')[1]){
+  
+  /*if (window.location.hash.split('#')[1]){
     profileView();
-  }
+    }*/
+
+    if (localStorage.getItem("curr") == null) {
+        document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('welcomeView').innerHTML;
+        document.getElementById("SignUpButton").disabled = true;
+    }
+    else {
+        document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
+    }
 };
 
-function logIn() {
-  var login = document.getElementById('loginInput').value;
-  var password = document.getElementById('passwordInput').value;
-  var response = serverstub.signIn(login, password);
-  //response: (success, message, data)
 
-  if (response.success == true){
-    //logged in
-    window.location.href = '#' + response.data;
-    profileView();
-  } else {
-    //failed to log in
-    document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
-  }
-}
-
-function passLength(pass)
+function passLength(pass, reptPass)
 {
-  var pass1 = document.getElementById(pass);
+    var pass1 = document.getElementById(pass);
+    var rptPass = document.getElementById(reptPass);
   if (pass1.value.length < 3 )
   {
     document.getElementById('passwordError').innerHTML = "Your password is too short :O";
@@ -34,17 +27,19 @@ function passLength(pass)
   else
   {
     document.getElementById('passwordError').innerHTML = "";
-    passwordVaildate();
+    passwordValidate(pass, reptPass);
     return true;
   }
 }
 
-passwordVaildate = function () {
+passwordValidate = function (firstPass, secondPass) {
 
   //Function to write a paragraph DIRECTLY
   // in the page if the passwords dont match
-  var pass1 = document.getElementById('pass');
-  var rptpass = document.getElementById('rptpass');
+ // var pass1 = document.getElementById('pass');
+  //var rptpass = document.getElementById('rptpass');
+  var pass1 = document.getElementById(firstPass);
+  var rptpass = document.getElementById(secondPass);
   if (pass1.value !== rptpass.value) {
     document.getElementById('passwordError').innerHTML = "Passwords don't match!";
   }
@@ -79,10 +74,27 @@ function sendForm(dataObject){
     document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
   }
 
+function logIn() {
+    var login = document.getElementById('loginInput').value;
+    var password = document.getElementById('passwordInput').value;
+    var response = serverstub.signIn(login, password);
+    //response: (success, message, data)
+
+    if (response.success == true) {
+        //logged in
+        //window.location.href = '#' + response.data;
+        localStorage.setItem("curr", response.data);
+        profileView();
+    } else {
+        //failed to log in
+        document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
+    }
+}
 
   function profileView() {
 
-    var token = window.location.hash.split('#')[1];
+      //var token = window.location.hash.split('#')[1];
+      var token = localStorage.getItem("curr");
 
     document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('profileView').innerHTML;
 
@@ -98,11 +110,38 @@ function sendForm(dataObject){
   //For the PROFILE VIEW
   //Tab switching
 
-  function changeTab(tabId)
+  function changeUpperTab(tabId)
   {
     //document.getElementById(tabId).style.backgroundColor = "lightgreen";
     document.getElementById("homebutton").className="deselected";
     document.getElementById("browsebutton").className="deselected";
-    document.getElementById("accountbutton").className="deselected";
+    document.getElementById("accountbutton").className = "deselected";
+    document.getElementById("signoutbutton").className = "deselected";
     document.getElementById(tabId).className="selected";
+
+    //Definitely not fulhax
+      if (tabId == "homebutton") {
+          switchTab("homeTab");
+      }
+      else if (tabId == "browsebutton") {
+          switchTab("browseTab");
+      }
+      else if (tabId == "accountbutton") {
+          switchTab("accountTab");
+      }
   }
+
+function switchTab(tabClass) {
+    document.getElementById("homeTab").style.display = "none";
+    document.getElementById("browseTab").style.display = "none";
+    document.getElementById("accountTab").style.display = "none";
+    document.getElementById(tabClass).style.display = "block";
+
+}
+
+function changeThisPassword(dataObject) {
+    var toSend = {
+        oldPassword: dataObject.oldpassword.value,
+        newPassword: dataObject.newpassword.value
+    };
+}

@@ -20,17 +20,17 @@
   <!-- INGEN STYLING I HTML-FILEN -->
     <div class="loginBox"><br>
       <b> Log in </b> <br>
-      <form action="#" method="get">
+      <form action="javascript:void" method="get" onsubmit="logIn()">
       <input id="loginInput" type="email" name="email" placeholder="Email" class="LoginBox" required><br>
       <input id="passwordInput" type="password" name="logPass" placeholder="Password" class="LoginBox" required><br>
-      <input type="submit" value="Log in" class="LoginButton" onclick="logIn()">
+      <input type="submit" value="Log in" class="LoginButton" >
       </form>
     </div>
 
 
     <div class="signupBox"><br>
        <b> Sign up here </b>
-       <form action="#" method="get" >
+       <form action="#" method="get" onsubmit="sendForm(this.form)">
         <input type="email" name="email" placeholder="Email" class="textBox" required><br>
         <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
         <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br>
@@ -39,10 +39,10 @@
         <input type="radio" name="gender" value="female" class="genderClass"> <label>Female</label><br>
         <input type="text" name="city" placeholder="City" class="textBox"required ><br>
         <input type="text" name="country" placeholder="Country" class="textBox" required  ><br>
-        <input type="password" name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass')" required><br>
-        <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordVaildate()" required><br>
+        <input type="password" name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass', 'rptpass')" required><br>
+        <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordValidate('pass', 'rptpass')" required><br>
         <div class="containStuff">
-          <input type="submit" value="Sign up" class="LoginButton" id="SignUpButton" onclick="sendForm(this.form)">
+          <input type="submit" value="Sign up" class="LoginButton" id="SignUpButton" >
           <!-- <p class="passwordErrorOne"></p> -->
           <p id="passwordError"></p>
           <p id="test"></p>
