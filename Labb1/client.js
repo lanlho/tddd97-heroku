@@ -57,21 +57,22 @@ passwordValidate = function (firstPass, secondPass) {
   }
 };
 
-function sendForm(dataObject){
+function sendForm(form){
   //TODO:		Ändra namn på snopp och swag-variablen.
+  //alert("before swag declared");
   var swag = {
-      email:dataObject.email.value,
-      password:dataObject.password.value,
-      firstname:dataObject.firstname.value,
-      familyname:dataObject.familyname.value,
-      gender:dataObject.gender.value,
-      city:dataObject.city.value,
-      country:dataObject.country.value
-    };
+      "email": form.email.value,
+      "password": form.password.value,
+      "firstname": form.firstname.value,
+      "familyname": form.familyname.value,
+      "gender": form.gender.value,
+      "city": form.city.value,
+      "country": form.country.value
+    }
 
     var snopp = serverstub.signUp(swag);
-    alert(snopp.success + " " + snopp.message);
-    document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
+    //alert(snopp.success + " " + snopp.message);
+    document.getElementById("test").innerHTML = snopp.success + " " + snopp.message; 
   }
 
 function logIn() {
@@ -96,8 +97,8 @@ function logIn() {
       //var token = window.location.hash.split('#')[1];
       var token = localStorage.getItem("curr");
 
-    document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('profileView').innerHTML;
-
+    //document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('profileView').innerHTML;
+	window.onload();
     //Profile view
     document.getElementById("homebutton").onclick = home;
     document.getElementById("browsebutton").onclick = browse;
@@ -144,4 +145,25 @@ function changeThisPassword(dataObject) {
         oldPassword: dataObject.oldpassword.value,
         newPassword: dataObject.newpassword.value
     };
+	var token = localStorage.getItem("curr");
+	var response = serverstub.changePassword(token, toSend.oldPassword,
+		toSend.newPassword);
+	document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
+}
+
+function signOut() {
+	var msg = serverstub.signOut(localStorage.getItem("curr"));
+	localStorage.removeItem("curr");
+	alert(msg.success +" " + msg.message);
+	window.onload();
+}
+
+function displayUserData() {
+	var userToken = localStorage.getItem("curr");
+	var response = serverstub.getUserDataByToken(userToken);
+	var data = response.data;
+	/*document.getElementById("userInfo").innerHTML = response.success +
+		" " + response.message + " " + response.data.firstname;*/
+	document.getElementById("userInfo").innerHTML = "<b>Name:</b>"
+		+ " " + "<p>" + data.firstname + " " + data.familyname + "</p>";
 }

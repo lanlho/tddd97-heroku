@@ -15,7 +15,7 @@
 <script id="welcomeView" type="text/view">
   <div class="welcome">
     <div class="logoClass">
-      <img src="wimage.png" alt=""></img>
+      <img src="wimage.png" alt="">
     </div>
   <!-- INGEN STYLING I HTML-FILEN -->
     <div class="loginBox"><br>
@@ -30,16 +30,16 @@
 
     <div class="signupBox"><br>
        <b> Sign up here </b>
-       <form action="#" method="get" onsubmit="sendForm(this.form)">
-        <input type="email" name="email" placeholder="Email" class="textBox" required><br>
+       <form action="javascript:void" method="get" onsubmit="sendForm(this)">
+        <input type="email"  name="email" placeholder="Email" class="textBox" required><br>
         <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
         <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br>
          <label> Sex:  </label>
          <input type="radio" name="gender" value="male" class="genderClass" required> <label>Male</label>
-        <input type="radio" name="gender" value="female" class="genderClass"> <label>Female</label><br>
+        <input type="radio"  name="gender" value="female" class="genderClass"> <label>Female</label><br>
         <input type="text" name="city" placeholder="City" class="textBox"required ><br>
         <input type="text" name="country" placeholder="Country" class="textBox" required  ><br>
-        <input type="password" name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass', 'rptpass')" required><br>
+        <input type="password"  name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass', 'rptpass')" required><br>
         <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordValidate('pass', 'rptpass')" required><br>
         <div class="containStuff">
           <input type="submit" value="Sign up" class="LoginButton" id="SignUpButton" >
@@ -57,13 +57,36 @@
         <div class="menutab">
             <ul>
                 <li></li>
-                <li><a href="#" id="homebutton" class="tablinks">Home</a></li>
-                <li><a href="#" id="browsebutton" class="tablinks">Browse</a></li>
-                <li><a href="#" id="accountbutton" class="tablinks">Account</a></li>
-                <li><a href="#" id="signoutbutton" class="logout">Log out</a></li>
+                <li id="homebutton" class="selected" onclick="changeUpperTab(this.id)"><a href="#">Home</a></li>
+                <li id="browsebutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Browse</a></li>
+                <li id="accountbutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Account</a></li>
+                <li id="signoutbutton" class="logout deselected" onclick="signOut()"><a href="#">Log out</a></li>
             </ul>
         </div>
-      </div>
+        <div id="containerArea">
+            <div id="homeTab">
+                <b>This is HOME</b><br />
+                <div id="userInfo" class="userTriplets" onclick="displayUserData()">
+                    
+                </div>
+                <div id="postMessageBox" class="userTriplets"></div>
+                <div id="messageWall" class="userTriplets"></div>
+
+            </div>
+            <div id="browseTab"><p>This is BROWSE</p></div>
+            <div id="accountTab">
+                <b>This is ACCOUNT</b><br />
+                <p>u wish to change password? Do so here:</p>
+                <form action="javascript:void" method="get" onsubmit="changeThisPassword(this)">
+                    <input type="password" name="oldpassword" placeholder="Old Password" class="textBox" id="olePass" required><br>
+                    <input type="password" name="newpassword" placeholder="New Password" class="textBox" id="newPass" oninput="passLength('newPass', 'newRepeatPass')" required><br>
+                    <input type="password" name="passe" placeholder="Repeat password" class="textBox" id="newRepeatPass" oninput="passwordValidate('newPass', 'newRepeatPass')" required><br>
+                    <input type="submit" value="Change Password" class="LoginButton" id="SignUpButton">
+                    <p id="passwordError"></p>
+                </form>
+            </div>
+        </div>
+    </div>
 </script>
 
 </head>
