@@ -127,6 +127,36 @@ form-label {
     margin-top:2px;
 }
 
+#writeMessage {
+    margin-left:5%;
+    margin-right:5%;
+    width:85%;
+    height:65%;
+}
+
+#postMessageBox h4 {
+    margin-left:5%;
+}
+#postMessageButton {
+    margin-top: 4px;
+    margin-left: 5%;
+}
+#postMessageForm {
+    width: 100%;
+    height:100%;
+}
+
+#wallMessages {
+    width:90%;
+    height:70%;
+    margin-left:5%;
+    background-color:pink;
+    overflow: auto;
+}
+#messageWall p {
+    margin-top: -0.5%;
+}
+
 ul {
     width: 100%;
     float: left;

@@ -10,6 +10,7 @@ window.onload = function () {
     }
     else {
         document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
+        displayUserData();
     }
 };
 
@@ -86,6 +87,7 @@ function logIn() {
         //window.location.href = '#' + response.data;
         localStorage.setItem("curr", response.data);
         profileView();
+      //  displayUserData();
     } else {
         //failed to log in
         document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
@@ -103,6 +105,8 @@ function logIn() {
     document.getElementById("homebutton").onclick = home;
     document.getElementById("browsebutton").onclick = browse;
     document.getElementById("accountbutton").onclick = account;
+
+      displayUserData();
 
     //Logout
     document.getElementById("signoutbutton").onclick = logout;
@@ -165,5 +169,11 @@ function displayUserData() {
 	/*document.getElementById("userInfo").innerHTML = response.success +
 		" " + response.message + " " + response.data.firstname;*/
 	document.getElementById("userInfo").innerHTML = "<b>Name:</b>"
-		+ " " + "<p>" + data.firstname + " " + data.familyname + "</p>";
+		+ " " + "<p>" + data.firstname + " " + data.familyname + "</p><br>"
+		+ "<b>Location</b>" + "<p>" +
+		data.city + ", " + data.country + "</p><br>" + "<b>Sex</b>" + 
+		"<p>" + data.gender + "</p>";
+
+	/*document.getElementById("userInfo").innerHTML = "<b>Location</b>" + "<p>"
+		data.city + "," + data.country + "</p>";*/
 }

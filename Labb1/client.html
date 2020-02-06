@@ -57,7 +57,7 @@
         <div class="menutab">
             <ul>
                 <li></li>
-                <li id="homebutton" class="selected" onclick="changeUpperTab(this.id)"><a href="#">Home</a></li>
+                <li id="homebutton" class="selected" onclick="changeUpperTab(this.id), displayUserData();"><a href="#">Home</a></li>
                 <li id="browsebutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Browse</a></li>
                 <li id="accountbutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Account</a></li>
                 <li id="signoutbutton" class="logout deselected" onclick="signOut()"><a href="#">Log out</a></li>
@@ -66,11 +66,21 @@
         <div id="containerArea">
             <div id="homeTab">
                 <b>This is HOME</b><br />
-                <div id="userInfo" class="userTriplets" onclick="displayUserData()">
-                    
+                <div id="userInfo" class="userTriplets" ">
                 </div>
-                <div id="postMessageBox" class="userTriplets"></div>
-                <div id="messageWall" class="userTriplets"></div>
+                <div id="postMessageBox" class="userTriplets">
+                <h4>Write message</h4>
+                <form id="postMessageForm">
+                <input type="text" id="writeMessage" />
+                <input type="submit" value="Post message" id="postMessageButton" />
+                </form>
+                </div>
+                <div id="messageWall" class="userTriplets">
+                <h5>This is messages on your wall:</h5>
+                <div id="wallMessages">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+                <p>RELOAD</p>
+                </div>
 
             </div>
             <div id="browseTab"><p>This is BROWSE</p></div>
