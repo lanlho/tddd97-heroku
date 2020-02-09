@@ -5,8 +5,6 @@
   A <meta> viewport element gives the browser instructions on how to control the page's dimensions and scaling.
   The width=device-width part sets the width of the page to follow the screen-width of the device (which will vary depending on the device).
   The initial-scale=1.0 part sets the initial zoom level when the page is first loaded by the browser.
-
-  If this comment is comitted pushing works
 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title> Twidder </title>
@@ -72,16 +70,19 @@
                 </div>
                 <div id="postMessageBox" class="userTriplets">
                 <h4>Write message</h4>
-                <form id="postMessageForm">
-                <input type="text" id="writeMessage" />
-                <input type="submit" value="Post message" id="postMessageButton" />
+                <form action="#" id="postMessageForm">
+                <input type="text" id="messageField" />
+                <input type="submit" value="Post message" id="postMessageButton" onclick="pressPost()" />
                 </form>
                 </div>
+
                 <div id="messageWall" class="userTriplets">
                 <h5>This is messages on your wall:</h5>
-                <div id="wallMessages">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <div id="wallMessages">
+                <span id="entries"></span>
                 </div>
-                <p>RELOAD</p>
+                <input type="submit" value="Reload" id="reloadButton" onclick="pressReload()" />
+
                 </div>
 
             </div>
