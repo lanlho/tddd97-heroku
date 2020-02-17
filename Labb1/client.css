@@ -163,6 +163,14 @@ form-label {
     margin-top: -0.5%;
 }
 
+#otherWallMessages {
+  width:90%;
+  height:68%;
+  margin-left:5%;
+  background-color:pink;
+  overflow: auto;
+}
+
 ul {
     width: 100%;
     float: left;

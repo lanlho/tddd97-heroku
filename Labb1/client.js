@@ -11,6 +11,7 @@ window.onload = function () {
     else {
         document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
         displayUserData();
+        pressReload();
     }
 };
 
@@ -43,6 +44,8 @@ passwordValidate = function (firstPass, secondPass) {
   var rptpass = document.getElementById(secondPass);
   if (pass1.value !== rptpass.value) {
     document.getElementById('passwordError').innerHTML = "Passwords don't match!";
+    document.getElementById("SignUpButton").disabled = true;
+
   }
   else if (rptpass.value.length < 3)
   {
@@ -56,7 +59,7 @@ passwordValidate = function (firstPass, secondPass) {
     //}
 
   }
-};
+}
 
 function sendForm(form){
   //TODO:		Ändra namn på snopp och swag-variablen.
@@ -160,6 +163,8 @@ function changeThisPassword(dataObject) {
 function signOut() {
 	var msg = serverstub.signOut(localStorage.getItem("token"));
 	localStorage.removeItem("token");
+  localStorage.removeItem("findemail");
+  localStorage.removeItem("email");
 	alert(msg.success +" " + msg.message);
 	window.onload();
 }
@@ -181,14 +186,24 @@ function displayUserData() {
 
 
 function pressPost (){
-  {
+
   var token = localStorage.getItem("token");
   var message = document.getElementById('messageField').value;
   var email =  localStorage.getItem("email");
   var result = serverstub.postMessage(token, message, email);
   console.log(result);
-  }
+
   pressReload();
+}
+function postMessagesOnOtherWall(){
+
+  var token = localStorage.getItem("token");
+  var message = document.getElementById('messageFieldTWO').value;
+  var email =  localStorage.getItem("findemail");
+  var result = serverstub.postMessage(token, message, email);
+  console.log(result.success);
+
+  pressReloadWithEmail();
 }
 
 function pressReload (){
@@ -202,4 +217,35 @@ function pressReload (){
      p.innerText = result.data[i].writer + " says: " + result.data[i].content;
      entries.appendChild(p);
  }
+}
+
+function pressReloadWithEmail (){
+  var userEmail = localStorage.getItem('findemail');
+  console.log(userEmail)
+  var result = serverstub.getUserMessagesByEmail(localStorage.getItem("token"),
+    userEmail);
+  var text = "";
+  var entries = document.getElementById("otherWall");
+  entries.innerHTML = "";
+
+  for (i = 0; i < result.data.length; i++) {
+     var p = document.createElement("p");
+     p.innerText = result.data[i].writer + " says: " + result.data[i].content;
+     entries.appendChild(p);
+ }
+}
+
+function findUserByEmail(userEmail) {
+  var token = localStorage.getItem("token");
+  var email = userEmail.userMail.value;
+  localStorage.setItem('findemail', email)
+  var response = serverstub.getUserDataByEmail(token, email);
+  var data = response.data;
+//  document.getElementById("firstTab").innerHTML = "Helo"
+
+  document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
+		+ " " + "<p>" + data.firstname + " " + data.familyname
+    + "</p>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p>"
+    + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
+
 }

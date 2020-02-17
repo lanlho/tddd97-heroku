@@ -66,11 +66,11 @@
         <div id="containerArea">
             <div id="homeTab">
                 <b>This is HOME</b><br />
-                <div id="userInfo" class="userTriplets" ">
+                <div id="userInfo" class="userTriplets">
                 </div>
                 <div id="postMessageBox" class="userTriplets">
                 <h4>Write message</h4>
-                <form action="#" id="postMessageForm">
+                <form action="javascript:void" id="postMessageForm">
                 <input type="text" id="messageField" />
                 <input type="submit" value="Post message" id="postMessageButton" onclick="pressPost()" />
                 </form>
@@ -86,7 +86,44 @@
                 </div>
 
             </div>
-            <div id="browseTab"><p>This is BROWSE</p></div>
+            <div id="browseTab">
+            <p>This is BROWSE</p>
+            <div class="userTriplets" id="firstTab">
+            <form id="findOtherUserInfo" action="javascript:void" method="get"
+            onsubmit="findUserByEmail(this), pressReloadWithEmail()">
+            <b>Find this other user!</b>
+            <input type="email" name="userMail" placeholder="Email" class="textBox"
+              id="thisCoolEmailAdress"\>
+            <input type="submit" name="Find User" \>
+            </form>
+            <div id="otherUserInfo"></div>
+            </div>
+
+
+            <div class="userTriplets" id="secondTab">
+            <b>Write message</b>
+            <form action="javascript:void" id="postMessageFormTWO"
+              onsubmit="postMessagesOnOtherWall()">
+            <input type="text" id="messageFieldTWO" class="textBox" />
+            <input type="submit" value="Post message" id="postMessageButtonTWO"/>
+            </form>
+            </div>
+
+
+            <div class="userTriplets" id="thirdTab">
+            <b>This Persons Wall</b>
+            <div id="otherWallMessages">
+            <span id="otherWall"></span>
+            </div>
+            <form id="thisIsPostOtherWallMessage" onsubmit="pressReloadWithEmail()"
+              method="get" action="javascript:void">
+            <input type="submit" value="Reload" id="reloadButtonTWO" />
+            </form>
+            </div>
+            </div>
+
+
+
             <div id="accountTab">
                 <b>This is ACCOUNT</b><br />
                 <p>u wish to change password? Do so here:</p>
