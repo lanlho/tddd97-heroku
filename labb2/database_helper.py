@@ -90,20 +90,158 @@ def add_user(email, password,first_name,family_name,gender,city,country):
 
 def sign_out(our_token):
     connection = init()
+    cursor = connection.cursor()
+
     try:
         print(our_token)
-        cur = connection.execute("SELECT token FROM signed_in_users where token = ?",[our_token])
-        if (cur.fetchone is not None ):
-            con = connection.execute("DELETE FROM signed_in_users WHERE token = ???", ["'",our_token,"'"]) #FULHAX
-            print(con)
-            connection.commit()
-            connection.close()
-            return("User signed out")
-        else:
-            return("FUCK")
-    except:
-        return("Either the user isn't logged in OR something went fuck")
+        cur = connection.execute("SELECT token FROM user where token = ?",[our_token])
 
+        if (cur.fetchone() is None):
+            print(cur.fetchone())
+            return("User not signed in")
+
+        con = cursor.execute("UPDATE user SET token = null WHERE token = ?", (our_token,)) #FULHAX
+
+    except:
+        return("Execute script to delete is FUCK")
+    try:
+        print(con)
+        connection.commit()
+        cursor.close()
+        return("User signed out")
+
+    except:
+        return("something went fuck")
+#-----------------------------------------------------------------------
+def change_password(token, old_password, new_password):
+    connection = init()
+    cursor = connection.cursor()
+    print("INSIDE CHANGE PASSWORD LOL")
+    try:
+        cur = cursor.execute("SELECT token FROM user WHERE token = ?",[token])
+    except:
+        print("Could not cursor.execute")
+    if(cur.fetchone() is not None):
+        try:
+            curTwo = cursor.execute("SELECT password FROM user WHERE password = ?",[old_password])
+        except:
+            print("Could not cursor two")
+        print("Hallelujah")
+        if (curTwo.fetchone() is not None):
+            print("This was good")
+            try:
+                cursor.execute("UPDATE user SET password = ? WHERE token = ?", [new_password, token])
+                connection.commit()
+                cursor.close()
+                print("Everything is awesome")
+                return("Password Changed Successfully")
+            except:
+                print("could not update")
+        else:
+            print("Wrong Old Password")
+            return("Wrong Old Password")
+    else:
+        print("qweqwewqeqwewqeq")
+        return("Wrong Token")
+#------------------------------------------------------------
+def get_user_data_by_token(token):
+    connection = init()
+    cursor = connection.cursor()
+    try:
+        asd = cursor.execute("SELECT email, first_name, family_name, gender,\
+        city,country FROM user WHERE token = ?", [token])
+        returning_dict = create_dict_for_user(asd)
+        return returning_dict
+    except:
+        return("Could not cursor execute")
+#----------------------------------------------------------------------
+def get_user_data_by_email(token, email):
+    connection = init()
+    cursor = connection.cursor()
+    qwe = cursor.execute("SELECT token FROM user WHERE token = ?", [token])
+    if (qwe.fetchone() is not None):
+        try:
+            asd = cursor.execute("SELECT email, first_name, family_name, gender,\
+            city,country FROM user WHERE email = ?", [email])
+            returning_dict = create_dict_for_user(asd)
+            return returning_dict
+        except:
+            return("Could not cursor execute")
+
+#--------------------------------------------------------------------
+def get_user_messages_by_token(token):
+    connection = init()
+    cursor = connection.cursor()
+    qwe = cursor.execute("SELECT token FROM user WHERE token = ?", [token])
+    if (qwe.fetchone() is not None):
+        temp_email = get_user_data_by_token(token)
+        email = temp_email["email"]
+
+        try:
+            returning_dict = create_dict_for_messages(email,cursor)
+            return returning_dict
+        except:
+            return("Could not cursor execute")
+#------------------------------------------------------------------------
+def create_dict_for_messages(email, cursor):
+    asd = cursor.execute("SELECT message, sending_user FROM messages WHERE\
+     receiving_user = ?", [email])
+    dict = asd.fetchall()
+    returning_dict = []
+    for e in dict:
+        returning_dict.append({"sender" : e[1], "message" : e[0]})
+    #for rows in returning_dict:
+    #    print(rows)
+    return returning_dict
+#-------------------------------------------------------------------------
+
+def get_user_messages_by_email(token, findEmail):
+    connection = init()
+    cursor = connection.cursor()
+    userSignedIn = cursor.execute("SELECT email FROM user WHERE token = ?"\
+    ,[token])
+
+    if (userSignedIn.fetchone() is not None):
+        #try:
+        returning_dict = create_dict_for_messages(findEmail,cursor)
+        return returning_dict
+        #except:
+        #    return("Could not cursor execute")
+
+#-------------------------------------------------------------------------
+
+
+def post_message(token,email,message):
+    connection = init()
+    cursor = connection.cursor()
+
+    userSignedIn = cursor.execute("SELECT email FROM user WHERE token = ?"\
+    ,[token])
+
+    if (userSignedIn.fetchone() is not None):
+        try:
+            temp_email = get_user_data_by_token(token)
+            our_email = temp_email["email"]
+            cursor.execute("INSERT INTO messages VALUES(?,?,?)", [email,our_email,message])
+            connection.commit()
+            cursor.close()
+            return("Message posted")
+        except:
+            return("something went fuck")
+    else:
+        return("not log in")
+
+
+def create_dict_for_user(cursor):
+    try:
+        qwe = cursor.fetchone()
+        returning_dict = {"email":qwe[0], "first_name":qwe[1],
+        "family_name":qwe[2], "gender":qwe[3],
+        "city":qwe[4], "country":qwe[5] }
+        return returning_dict
+    except Error as e:
+        print(e)
+        return
 
 def init():
     con = None
