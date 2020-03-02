@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+  A <meta> viewport element gives the browser instructions on how to control the page's dimensions and scaling.
+  The width=device-width part sets the width of the page to follow the screen-width of the device (which will vary depending on the device).
+  The initial-scale=1.0 part sets the initial zoom level when the page is first loaded by the browser.
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Twidder </title>
+<link href="client.css" type="text/css" rel="stylesheet">
+<script src="client.js" type="text/javascript"></script>
+<script src="serverstub.js"></script>
+
+<script id="welcomeView" type="text/view">
+  <div class="welcome">
+    <div class="logoClass">
+      <img src="wimage.png" alt="">
+    </div>
+  <!-- INGEN STYLING I HTML-FILEN -->
+    <div class="loginBox"><br>
+      <b> Log in </b> <br>
+      <form action="javascript:void" method="get" onsubmit="logIn()">
+      <input id="loginInput" type="email" name="email" placeholder="Email" class="LoginBox" required><br>
+      <input id="passwordInput" type="password" name="logPass" placeholder="Password" class="LoginBox" required><br>
+      <input type="submit" value="Log in" class="LoginButton" >
+      </form>
+    </div>
+
+
+    <div class="signupBox"><br>
+       <b> Sign up here </b>
+       <form action="javascript:void" method="get" onsubmit="sendForm(this)">
+        <input type="email"  name="email" placeholder="Email" class="textBox" required><br>
+        <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
+        <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br>
+         <label> Sex:  </label>
+         <input type="radio" name="gender" value="male" class="genderClass" required> <label>Male</label>
+        <input type="radio"  name="gender" value="female" class="genderClass"> <label>Female</label><br>
+        <input type="text" name="city" placeholder="City" class="textBox"required ><br>
+        <input type="text" name="country" placeholder="Country" class="textBox" required  ><br>
+        <input type="password"  name="password" placeholder="Password" class="textBox" id="pass" oninput="passLength('pass', 'rptpass')" required><br>
+        <input type="password"  name="passe" placeholder="Repeat password" class="textBox" id="rptpass" oninput="passwordValidate('pass', 'rptpass')" required><br>
+        <div class="containStuff">
+          <input type="submit" value="Sign up" class="LoginButton" id="SignUpButton" >
+          <!-- <p class="passwordErrorOne"></p> -->
+          <p id="passwordError"></p>
+          <p id="test"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</script>
+
+<script id="profileView" type="text/view">
+    <div class="layout">
+        <div class="menutab">
+            <ul>
+                <li></li>
+                <li id="homebutton" class="selected" onclick="changeUpperTab(this.id), displayUserData();"><a href="#">Home</a></li>
+                <li id="browsebutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Browse</a></li>
+                <li id="accountbutton" class="deselected" onclick="changeUpperTab(this.id)"><a href="#">Account</a></li>
+                <li id="signoutbutton" class="logout deselected" onclick="signOut()"><a href="#">Log out</a></li>
+            </ul>
+        </div>
+        <div id="containerArea">
+            <div id="homeTab">
+                <b>This is HOME</b><br />
+                <div id="userInfo" class="userTriplets">
+                </div>
+                <div id="postMessageBox" class="userTriplets">
+                <h4>Write message</h4>
+                <form action="javascript:void" id="postMessageForm">
+                <input type="text" id="messageField" />
+                <input type="submit" value="Post message" id="postMessageButton" onclick="pressPost()" />
+                </form>
+                </div>
+
+                <div id="messageWall" class="userTriplets">
+                <h5>This is messages on your wall:</h5>
+                <div id="wallMessages">
+                <span id="entries"></span>
+                </div>
+                <input type="submit" value="Reload" id="reloadButton" onclick="pressReload()" />
+
+                </div>
+
+            </div>
+            <div id="browseTab">
+            <p>This is BROWSE</p>
+            <div class="userTriplets" id="firstTab">
+            <form id="findOtherUserInfo" action="javascript:void" method="get"
+            onsubmit="findUserByEmail(this), pressReloadWithEmail()">
+            <b>Find this other user!</b>
+            <input type="email" name="userMail" placeholder="Email" class="textBox"
+              id="thisCoolEmailAdress"\>
+            <input type="submit" name="Find User" \>
+            </form>
+            <div id="otherUserInfo"></div>
+            </div>
+
+
+            <div class="userTriplets" id="secondTab">
+            <b>Write message</b>
+            <form action="javascript:void" id="postMessageFormTWO"
+              onsubmit="postMessagesOnOtherWall()">
+            <input type="text" id="messageFieldTWO" class="textBox" />
+            <input type="submit" value="Post message" id="postMessageButtonTWO"/>
+            </form>
+            </div>
+
+
+            <div class="userTriplets" id="thirdTab">
+            <b>This Persons Wall</b>
+            <div id="otherWallMessages">
+            <span id="otherWall"></span>
+            </div>
+            <form id="thisIsPostOtherWallMessage" onsubmit="pressReloadWithEmail()"
+              method="get" action="javascript:void">
+            <input type="submit" value="Reload" id="reloadButtonTWO" />
+            </form>
+            </div>
+            </div>
+
+
+
+            <div id="accountTab">
+                <b>This is ACCOUNT</b><br />
+                <p>u wish to change password? Do so here:</p>
+                <form action="javascript:void" method="get" onsubmit="changeThisPassword(this)">
+                    <input type="password" name="oldpassword" placeholder="Old Password" class="textBox" id="olePass" required><br>
+                    <input type="password" name="newpassword" placeholder="New Password" class="textBox" id="newPass" oninput="passLength('newPass', 'newRepeatPass')" required><br>
+                    <input type="password" name="passe" placeholder="Repeat password" class="textBox" id="newRepeatPass" oninput="passwordValidate('newPass', 'newRepeatPass')" required><br>
+                    <input type="submit" value="Change Password" class="LoginButton" id="SignUpButton">
+                    <p id="passwordError"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+</head>
+<!--textbox-->
+<body>
+  hello
+</body>
+</html>
