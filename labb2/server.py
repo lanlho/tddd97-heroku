@@ -5,20 +5,22 @@ app = Flask(__name__)
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
     data = request.get_json()
-    found_user = database_helper.find_user(data['email'])
-    token = database_helper.match_email_to_password(data['email'], data['password'])
-    return token
-    if found_user:
-        return jsonify({"success": True, "message": "Successfully signed in.", "data": token})
+    email = data["email"]
+    password = data['password']
+    found_user = database_helper.find_user(email)
+    user = database_helper.match_email_to_password(data['email'], data['password'])
+    if (user["success"]):
+        return jsonify({"success":True, "message":"User signed in successfully", "token":user["token"]})
     else:
-        return jsonify({"success": False, "message": "Wrong username or password."})
+        return jsonify({"success":False, "Message":user})
     #return "This is text"
 #-------------------------------------------------------
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
     data = request.get_json()
+    print (data)
     try:
-        email = data['email']
+        email = data["email"]
         password = data['password']
         first_name = data['first_name']
         family_name = data['family_name']
@@ -26,25 +28,21 @@ def sign_up():
         city = data['city']
         country = data['country']
     except:
-        return ("Some JSON-data is FUCKED //Sign_up")
+        return ("JSON-input could not be collected.")
 
     try: #Password validator
         if (len(password) < 3):
-            raise NameError("swiggity")
+            raise NameError("Too short Password")
     except NameError:
-        return("Password too short")
+        return jsonify({"success":False, "message":"Password too short"})
 
-    if (not database_helper.exist_user(data['email'])):
+    if (not database_helper.exist_user(email)):
         database_helper.add_user(email,password,first_name,family_name, gender,city,country)
-    else:
-        return "User already Exist!"
-    print(data)
-    is_taken = database_helper.exist_user(email)
-    if (is_taken):
-        return jsonify({"success": False, "message": "User already exists."})
-    else:
-        database_helper.add_user(email, password, firstname, familyname, gender, city, country)
         return jsonify({"success": True, "message": "Successfully created a new user."})
+    else:
+        return jsonify({"success": False, "message": "User already exists."})
+
+
 
 #---------------------------------------------------------------
 
@@ -52,9 +50,8 @@ def sign_up():
 def sign_out():
     token = request.headers.get('token')
     print(token)
-    return database_helper.sign_out(token)
-    if token in sign_out:
-        del sign_out[token]
+    status = database_helper.sign_out(token)
+    if (status["success"]):
         return jsonify({"success": True, "message": "Successfully signed out."})
     else:
         return jsonify({"success": False, "message": "You are not signed in."})
@@ -64,23 +61,23 @@ def sign_out():
 @app.route('/change_password', methods=['POST'])
 def change_password():
     data = request.get_json()
+    token = request.headers.get('token')
     try:
-        token = data['token']
+        #token = data['token']
         old_password = data['old_password']
         new_password = data['new_password']
     except:
-        return("Could not read JSON")
-    try:
-         return(database_helper.change_password(token, old_password, new_password))
-    except:
-        return("something went really fucking wrong with the pw")
+        return jsonify({"success":False, "message":"Could not get JSON-input"})
 
-    is_taken = database_helper.exist_user(email)
-    if (is_taken):
-        return jsonify({"success": False, "message": "User already exists."})
+    status = database_helper.change_password(token, old_password, new_password)
+
+    if(status["success"]):
+         return jsonify({"success":True, "message":status["message"]})
     else:
-        database_helper.add_user(email, password, firstname, familyname, gender, city, country)
-        return jsonify({"success": True, "message": "Successfully created a new user."})
+        return jsonify({"success":False, "message":status["message"]})
+        #Not entirely sure status will be carried over from the try
+
+
 
 #-----------------------------------------------------------------
 
@@ -89,28 +86,38 @@ def get_user_data_by_token():
     try:
         token = request.headers.get('token')
     except:
-        return("Could not access token")
-    return database_helper.get_user_data_by_token(token)
+        return jsonify({"success":False, "message":"Could not get JSON-Input"})
+    try:
+        user = database_helper.get_user_data_by_token(token)
+    except:
+        return jsonify({"success":False, "message": user})
+
+    if (user["success"]):
+        #print (user)
+        return jsonify({"success": True, "Message":"User data retrieved", "email": user["email"],
+        "first_name":user["first_name"], "family_name":user["family_name"], "gender":user["gender"],
+         "city":user["city"], "country":user["country"]})
+    else:
+        return jsonify({"success":False, "message":"Could not find user"})
 
 #-------------------------------------------------------------------
 
-@app.route('/get_user_data_by_email', methods=['GET'])
-def get_user_data_by_email():
+@app.route('/get_user_data_by_email/<email>', methods=['GET'])
+def get_user_data_by_email(email):
     try:
         token = request.headers.get('token')
-        email = request.headers.get('email')
+        #email = request.headers.get('email')
     except:
-        return("Could not access header-parameters")
-    return database_helper.get_user_data_by_email(token, email)
+        return jsonify({"success":False, "message":"Could not access JSON-Input"})
 
-    if token in get_user_data_by_email:
-        user_data = database_helper.get_user_data(email)
-        if user_data:
-            return jsonify({"success": True, "message": "User data retrieved.", "data": user_data})
-        else:
-            return jsonify({"success": False, "message": "No such user."})
+
+    user = database_helper.get_user_data_by_email(token, email)
+    if (user["success"]):
+            return jsonify({"success": True, "Message":"User data retrieved", "email": user["email"],
+            "first_name":user["first_name"], "family_name":user["family_name"], "gender":user["gender"],
+             "city":user["city"], "country":user["country"]})
     else:
-        return jsonify({"success": False, "message": "You are not signed in."})
+        return jsonify({"success":False, "message":"Could not find user"})
 
 #------------------------------------------------------------------
 
@@ -121,39 +128,35 @@ def get_user_messages_by_token():
     except:
         return("Could not get json")
     asd = database_helper.get_user_messages_by_token(token)
-    StringToReturn = ''
+    if (asd["success"]):
+        StringToReturn = ''
     #print(asd)
-    for e in asd:
+        for e in asd["messages"]:
         #print(e)
-        StringToReturn += e["sender"] + ":" + e["message"] + "|"
-    return(StringToReturn)
+            StringToReturn += e["sender"] + ":" + e["message"] + "|"
+        return jsonify({"success":True, "messages": StringToReturn})
+    else:
+        return jsonify({"success":False, "message":"Could not get messages"})
 
 #-------------------------------------------------------------------
 
-@app.route('/get_user_messages_by_email', methods=['GET'])
-def get_user_messages_by_email():
+@app.route('/get_user_messages_by_email/<email>', methods=['GET'])
+def get_user_messages_by_email(email):
     try:
         token = request.headers.get('token')
-        findEmail = request.headers.get('email')
+        #findEmail = request.headers.get('email')
     except:
         return("Could not get json")
-    asd = database_helper.get_user_messages_by_email(token,findEmail)
+    asd = database_helper.get_user_messages_by_email(token,email)
     StringToReturn = ''
     #print(asd)
-    for e in asd:
+    if (asd["success"]):
+        for e in asd["messages"]:
         #print(e)
-        StringToReturn += e["sender"] + ":" + e["message"] + "|"
-    return(StringToReturn)
-
-    if token in findEmail:
-        messages = database_helper.get_user_messages_by_email(token)
-        user_exist = database_helper.exist_user(findEmail)
-        if user_exist:
-            return jsonify({"success": True, "message": "User messages retrieved.", "data": messages})
-        else:
-            return jsonify({"success": False, "message": "No such user."})
+            StringToReturn += e["sender"] + ":" + e["message"] + "|"
+        return jsonify({"success":True, "message":StringToReturn})
     else:
-        return jsonify({"success": False, "message": "You are not signed in."})
+        return jsonify({"success":False, "message":"Could not return messages"})
 
 
 #-------------------------------------------------------------------
@@ -162,21 +165,22 @@ def get_user_messages_by_email():
 def post_message():
     try:
         token = request.headers.get('token')
+        data = request.get_json()
     except:
         return("Could not get header token")
     try:
-        data = request.get_json()
-        email = data["email"]
-        message = data["message"]
+        email = data['email']
+        message = data['message']
     except:
+        #print(data['email'], " ", data['message'])
         return("Could not get JSON-data")
-    return database_helper.post_message(token,email,message)
+    #return database_helper.post_message(token,email,message)
 
-    user_exist = database_helper.exist_user(sending_user)
-    if token in exist_user:
-        receiving_user = logged_in_users[token]
+    user_exist = database_helper.exist_user(email)
+    if (user_exist is not None and database_helper.exist_user_token(token)):
+        #receiving_user = logged_in_users[email]
         if (user_exist):
-            database_helper.post_message(message, receiving_user, sending_user)
+            database_helper.post_message(token, email, message)
             return jsonify({"success": True, "message": "Message posted"})
         else:
             return jsonify({"success": False, "message": "No such user."})
@@ -189,8 +193,8 @@ def post_message():
 #sqlite3 database.db för att komma in i databasen och kunna köra kommandon/script
 #För att körad schema.sql, kör .read schema.sql
 
-#if __name__ == '__main__':
-    #.app.run()
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
 #xhr.send(Json.stringify("data":"data"))
 #xhr.hearder("token":local.stodf)
 

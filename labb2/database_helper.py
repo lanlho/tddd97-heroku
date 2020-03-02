@@ -40,14 +40,14 @@ def match_email_to_password(email, password):
             print(token)
 
             #Sqlite3 black magick
-            sql = connection.execute("UPDATE signed_in_users SET email = ? AND token = ?", [email, token])
+            sql = connection.execute("UPDATE user SET token = ?", [token])
             connection.commit()
-            return token
+            return {"success":True, "token":token}
 
         else:
-            return "False"
+            return None
     except:
-        return "if-statements are FUCKED"
+        return "Could not sign in"
 #-------------------------------------------------------------
 
 def generate_token(size=6, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
@@ -68,7 +68,24 @@ def exist_user(findEmail):
             return True
     except:
         connection.close()
-        return "Something is fucked but i dunno"
+        return False
+
+#--------------------------------------------------------------
+
+def exist_user_token(token):
+    connection = init()
+    try:
+        returnedFromDB = connection.execute("SELECT email FROM user WHERE token = ?", [token])
+        tmp_user = returnedFromDB.fetchone()
+        if (tmp_user is None):
+            connection.close()
+            return False
+        else:
+            connection.close()
+            return True
+    except:
+        connection.close()
+        return False
 
 #--------------------------------------------------------------
 
@@ -98,25 +115,24 @@ def sign_out(our_token):
 
         if (cur.fetchone() is None):
             print(cur.fetchone())
-            return("User not signed in")
+            return({"success":False})
 
         con = cursor.execute("UPDATE user SET token = null WHERE token = ?", (our_token,)) #FULHAX
 
     except:
-        return("Execute script to delete is FUCK")
+        return ({"success":False})
     try:
         print(con)
         connection.commit()
         cursor.close()
-        return("User signed out")
+        return({"success":False, "message":"User signed out"})
 
     except:
-        return("something went fuck")
+        return None
 #-----------------------------------------------------------------------
 def change_password(token, old_password, new_password):
     connection = init()
     cursor = connection.cursor()
-    print("INSIDE CHANGE PASSWORD LOL")
     try:
         cur = cursor.execute("SELECT token FROM user WHERE token = ?",[token])
     except:
@@ -126,23 +142,18 @@ def change_password(token, old_password, new_password):
             curTwo = cursor.execute("SELECT password FROM user WHERE password = ?",[old_password])
         except:
             print("Could not cursor two")
-        print("Hallelujah")
-        if (curTwo.fetchone() is not None):
-            print("This was good")
+        if (curTwo.fetchone() is not None and len(new_password) > 2):
             try:
                 cursor.execute("UPDATE user SET password = ? WHERE token = ?", [new_password, token])
                 connection.commit()
                 cursor.close()
-                print("Everything is awesome")
-                return("Password Changed Successfully")
+                return({"success":True, "message":"Password Changed Successfully"})
             except:
-                print("could not update")
+                return ({"success":False, "message":"Could not update databse"})
         else:
-            print("Wrong Old Password")
-            return("Wrong Old Password")
+            return({"success":False, "message":"Wrong Old Password or too short password"})
     else:
-        print("qweqwewqeqwewqeq")
-        return("Wrong Token")
+        return({"success":False, "message":"Wrong Token"})
 #------------------------------------------------------------
 def get_user_data_by_token(token):
     connection = init()
@@ -153,20 +164,21 @@ def get_user_data_by_token(token):
         returning_dict = create_dict_for_user(asd)
         return returning_dict
     except:
-        return("Could not cursor execute")
+        return({"success":False, "message":
+        "There was an error in fetching and returning data from DB"})
 #----------------------------------------------------------------------
 def get_user_data_by_email(token, email):
     connection = init()
     cursor = connection.cursor()
     qwe = cursor.execute("SELECT token FROM user WHERE token = ?", [token])
     if (qwe.fetchone() is not None):
-        try:
             asd = cursor.execute("SELECT email, first_name, family_name, gender,\
             city,country FROM user WHERE email = ?", [email])
             returning_dict = create_dict_for_user(asd)
             return returning_dict
-        except:
-            return("Could not cursor execute")
+    else:
+        return ({"success":False, "message":
+        "There was an error in fetching and returning data from DB"})
 
 #--------------------------------------------------------------------
 def get_user_messages_by_token(token):
@@ -181,7 +193,7 @@ def get_user_messages_by_token(token):
             returning_dict = create_dict_for_messages(email,cursor)
             return returning_dict
         except:
-            return("Could not cursor execute")
+            return({"success":False, "message":"Could not cursor execute"})
 #------------------------------------------------------------------------
 def create_dict_for_messages(email, cursor):
     asd = cursor.execute("SELECT message, sending_user FROM messages WHERE\
@@ -190,9 +202,11 @@ def create_dict_for_messages(email, cursor):
     returning_dict = []
     for e in dict:
         returning_dict.append({"sender" : e[1], "message" : e[0]})
+    #status_code = ({"success":True, "status":"Everything went great"})
+    status = {"success":True, "messages":returning_dict}
     #for rows in returning_dict:
     #    print(rows)
-    return returning_dict
+    return status
 #-------------------------------------------------------------------------
 
 def get_user_messages_by_email(token, findEmail):
@@ -200,11 +214,15 @@ def get_user_messages_by_email(token, findEmail):
     cursor = connection.cursor()
     userSignedIn = cursor.execute("SELECT email FROM user WHERE token = ?"\
     ,[token])
+    foundUser = cursor.execute("SELECT email FROM user WHERE email = ?"\
+    ,[findEmail])
 
-    if (userSignedIn.fetchone() is not None):
+    if (userSignedIn.fetchone() is not None and foundUser.fetchall() is not None):
         #try:
         returning_dict = create_dict_for_messages(findEmail,cursor)
         return returning_dict
+    else:
+        return ({"success":False, "message":"Something went terribly wrong!"})
         #except:
         #    return("Could not cursor execute")
 
@@ -237,11 +255,10 @@ def create_dict_for_user(cursor):
         qwe = cursor.fetchone()
         returning_dict = {"email":qwe[0], "first_name":qwe[1],
         "family_name":qwe[2], "gender":qwe[3],
-        "city":qwe[4], "country":qwe[5] }
+        "city":qwe[4], "country":qwe[5], "success":True }
         return returning_dict
-    except Error as e:
-        print(e)
-        return
+    except:
+        return ({"success":False, "message":"Could not create dictionary"})
 
 def init():
     con = None
