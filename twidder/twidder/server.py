@@ -21,7 +21,10 @@ def sign_in():
 #-------------------------------------------------------
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except:
+        return("Could not data = request.get_json()")
     print (data)
     try:
         email = data["email"]

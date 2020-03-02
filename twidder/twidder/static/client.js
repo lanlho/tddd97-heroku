@@ -65,18 +65,39 @@ function sendForm(form){
   //TODO:		Ändra namn på snopp och swag-variablen.
   //alert("before swag declared");
   var swag = {
-      "email": form.email.value,
-      "password": form.password.value,
-      "firstname": form.firstname.value,
-      "familyname": form.familyname.value,
-      "gender": form.gender.value,
-      "city": form.city.value,
-      "country": form.country.value
+      email: form.email.value,
+      password: form.password.value,
+      first_name: form.firstname.value,
+      family_name: form.familyname.value,
+      gender: form.gender.value,
+      city: form.city.value,
+      country: form.country.value
     }
 
     var snopp = serverstub.signUp(swag);
+    var xhr = new XMLHttpRequest();
+    var result = document.getElementById('test');
+    console.log(swag);
+    xhr.open('POST', '/sign_up', true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    //xhr.send("email:" + swag.email, "password:"+swag.password, "first_name:"+swag.first_name, "family_name:"+swag.family_name,
+     //       "gender:"+swag.gender, "city");
+    swag=JSON.stringify(swag);
+    xhr.send(swag);
+    xhr.onreadystatechange = function()
+    {
+      if(this.readyState == 4) {
+        result.innerHTML = this.responseText;
+        console.log('success!');
+
+      } else {
+        result.innerHTML = 'Error';
+        console.log('hej');
+      }
+    }
+    return null;
     //alert(snopp.success + " " + snopp.message);
-    document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
+    //document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
   }
 
 function logIn() {
