@@ -12,11 +12,13 @@ def sign_in():
     email = data["email"]
     password = data['password']
     found_user = database_helper.find_user(email)
+    print(found_user)
     user = database_helper.match_email_to_password(data['email'], data['password'])
-    if (user["success"]):
+    print("User: ",user['success'], " : ", user["message"])
+    if (user["success"] is True):
         return jsonify({"success":True, "message":"User signed in successfully", "token":user["token"]})
     else:
-        return jsonify({"success":False, "Message":user})
+        return jsonify({"success":False, "message":"something went wrong"})
     #return "This is text"
 #-------------------------------------------------------
 @app.route('/sign_up', methods=['POST'])
@@ -56,11 +58,12 @@ def sign_up():
 @app.route('/sign_out', methods=['POST'])
 def sign_out():
     token = request.headers.get('token')
-    print(token)
+    print("This is the token we're sending: ", token)
     status = database_helper.sign_out(token)
     if (status["success"]):
         return jsonify({"success": True, "message": "Successfully signed out."})
     else:
+        print(status["message"])
         return jsonify({"success": False, "message": "You are not signed in."})
 
 #--------------------------------------------------------------

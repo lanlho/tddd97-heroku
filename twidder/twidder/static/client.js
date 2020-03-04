@@ -74,7 +74,7 @@ function sendForm(form){
       country: form.country.value
     }
 
-    var snopp = serverstub.signUp(swag);
+    //var snopp = serverstub.signUp(swag);
     var xhr = new XMLHttpRequest();
     var result = document.getElementById('test');
     console.log(swag);
@@ -103,7 +103,36 @@ function sendForm(form){
 function logIn() {
     var login = document.getElementById('loginInput').value;
     var password = document.getElementById('passwordInput').value;
-    var response = serverstub.signIn(login, password);
+    var userDetails = {
+      "email" : login,
+      "password" : password
+    }
+    console.log(userDetails);
+    console.log("After trying to console.log userdetials first");
+    userDetails = JSON.stringify(userDetails);
+    console.log(userDetails);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/sign_in', true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.responseType = 'json';
+    xhr.send(userDetails);
+    xhr.onreadystatechange = function()
+    {
+      if(this.readyState == 4 && this.response['success'] == true) {
+        //result.innerHTML = this.responseText;
+        localStorage.setItem("token", this.response["token"]);
+        localStorage.setItem("email",login)
+        console.log('could log in');
+        profileView();
+        displayUserData();
+
+      } else {
+        //result.innerHTML = 'Error';
+        console.log('could not log in, readystate = ',this.readyState);
+        document.getElementById("passwordError").innerHTML = this.response["message"];
+      }
+    }
+   /* var response = serverstub.signIn(login, password);
     //response: (success, message, data)
 
     if (response.success == true) {
@@ -116,7 +145,7 @@ function logIn() {
     } else {
         //failed to log in
         document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
-    }
+    }*/
 }
 
   function profileView() {
@@ -172,22 +201,66 @@ function switchTab(tabClass) {
 
 function changeThisPassword(dataObject) {
     var toSend = {
-        oldPassword: dataObject.oldpassword.value,
-        newPassword: dataObject.newpassword.value
+        old_password: dataObject.oldpassword.value,
+        new_password: dataObject.newpassword.value
     };
+    toSend = JSON.stringify(toSend);
 	var token = localStorage.getItem("token");
-	var response = serverstub.changePassword(token, toSend.oldPassword,
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/change_password', true);
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.setRequestHeader('token', token);
+  xhr.responseType = 'json';
+  xhr.send(toSend);
+  xhr.onreadystatechange = function()
+  {
+    if(this.readyState == 4 && this.response['success'] == true)
+    {
+      //result.innerHTML = this.responseText;
+      document.getElementById("passwordError").innerHTML = this.response["message"];
+      console.log('Password changed');
+    }
+    else
+    {
+      //result.innerHTML = 'Error';
+      console.log('could not log in, readystate = ',this.readyState);
+      document.getElementById("passwordError").innerHTML = this.response["message"];
+	/*var response = serverstub.changePassword(token, toSend.oldPassword,
 		toSend.newPassword);
 	document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
+  */
+    }
+  }
 }
 
 function signOut() {
-	var msg = serverstub.signOut(localStorage.getItem("token"));
-	localStorage.removeItem("token");
-  localStorage.removeItem("findemail");
-  localStorage.removeItem("email");
-	alert(msg.success +" " + msg.message);
-	window.onload();
+	//var msg = serverstub.signOut(localStorage.getItem("token"));
+  var token = localStorage.getItem("token");
+  console.log(token);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/sign_out', true);
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.setRequestHeader('token', token);
+  xhr.responseType = 'json';
+  xhr.send();
+  xhr.onreadystatechange = function()
+  {
+    if(this.readyState == 4 && this.response['success'] == true)
+    {
+      localStorage.removeItem("token");
+      console.log('Logged out successfully');
+      window.onload();
+    }
+    else
+    {
+      console.log('could not log in, readystate = ',this.readyState);
+      //document.getElementById("passwordError").innerHTML = this.response["message"];
+
+	//alert(msg.success +" " + msg.message);
+	//window.onload();
+    }
+  }
 }
 
 function displayUserData() {

@@ -10,15 +10,18 @@ def find_user(findEmail):
         returnedFromDB = connection.execute("SELECT * FROM user WHERE email = \'" + findEmail + "'"  ) #Fulhax DELUXE
         tmp_user = returnedFromDB.fetchall()[0]
         print(tmp_user)
-        user = {"email":tmp_user[0], "first_name":tmp_user[1],
-            "family_name":tmp_user[2], "gender":tmp_user[3],
-            "city":tmp_user[4], "country":tmp_user[5], "password":tmp_user[6]}
-        print(user)
-        connection.close()
-        return user
+        if (tmp_user is not None):
+            user = {"email":tmp_user[0], "first_name":tmp_user[1],
+                "family_name":tmp_user[2], "gender":tmp_user[3],
+                "city":tmp_user[4], "country":tmp_user[5], "password":tmp_user[6]}
+            print(user)
+            connection.close()
+            return user
+        else:
+            return {"success":False, "message":"Could not find user"}
     except:
         connection.close()
-        return "Could not find user or maybe something else went wrong"
+        return {"success":False}
 
 #---------------------------------------------------------------
 def match_email_to_password(email, password):
@@ -27,11 +30,11 @@ def match_email_to_password(email, password):
         returnedFromDB = connection.execute("SELECT email, password FROM user WHERE email = ? AND password = ?"
         , [email, password])
     except:
-        return "Something went really fuckign wrng"
+        return {"success":False, "message":"Could not match email to password"}
     try:
         tmp_user = returnedFromDB.fetchall()[0]
     except:
-        return "Could not fetch"
+        return {"success":False, "message":"No results with that combination"}
     try:
         if (returnedFromDB.rowcount >= -1):     #rowcount = -1. Don't show labassistant. Remove comment later
             print (returnedFromDB.rowcount)
@@ -40,14 +43,14 @@ def match_email_to_password(email, password):
             print(token)
 
             #Sqlite3 black magick
-            sql = connection.execute("UPDATE user SET token = ?", [token])
+            sql = connection.execute("UPDATE user SET token = ? WHERE email = ?", [token,email])
             connection.commit()
-            return {"success":True, "token":token}
+            return {"success":True, "token":token, "message":"Work well"}
 
         else:
-            return None
+            return {"success":False, "message":"Could not match email to password"}
     except:
-        return "Could not sign in"
+        return {"success":False, "message":"Sometwhing went wrong when trying to set token"}
 #-------------------------------------------------------------
 
 def generate_token(size=6, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
@@ -115,20 +118,24 @@ def sign_out(our_token):
 
         if (cur.fetchone() is None):
             print(cur.fetchone())
-            return({"success":False})
-
-        con = cursor.execute("UPDATE user SET token = null WHERE token = ?", (our_token,)) #FULHAX
-
+            print("Could not fetchone() for the token!")
+            return({"success":False, "message":"Could not find token"})
     except:
-        return ({"success":False})
+        return ({"success":False, "message":"not ok"})
+    try:
+        con = cursor.execute("UPDATE user SET token = null WHERE token = ?", [our_token]) #FULHAX
+        print("We could set token to None in DB")
+    except:
+        return ({"success":False, "message":"Something went very Wrong\
+        trying to delete token from database"})
     try:
         print(con)
         connection.commit()
         cursor.close()
-        return({"success":False, "message":"User signed out"})
+        return({"success":True, "message":"User signed out"})
 
     except:
-        return None
+        return ({"success":False, "message":"Really couldnt save the database :/"})
 #-----------------------------------------------------------------------
 def change_password(token, old_password, new_password):
     connection = init()
