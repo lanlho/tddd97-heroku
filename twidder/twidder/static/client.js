@@ -1,25 +1,20 @@
 window.onload = function () {
 
-  /*if (window.location.hash.split('#')[1]){
-    profileView();
-    }*/
-
-    if (localStorage.getItem("token") == null) {
-        document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('welcomeView').innerHTML;
-        document.getElementById("SignUpButton").disabled = true;
-    }
-    else {
-        document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
-        displayUserData();
-        pressReload();
-    }
+  if (localStorage.getItem("token") == null) {
+    document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('welcomeView').innerHTML;
+    document.getElementById("SignUpButton").disabled = true;
+  }
+  else {
+    document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
+    requestUserData();
+  }
 };
 
 
 function passLength(pass, reptPass)
 {
-    var pass1 = document.getElementById(pass);
-    var rptPass = document.getElementById(reptPass);
+  var pass1 = document.getElementById(pass);
+  var rptPass = document.getElementById(reptPass);
   if (pass1.value.length < 3 )
   {
     document.getElementById('passwordError').innerHTML = "Your password is too short :O";
@@ -35,11 +30,6 @@ function passLength(pass, reptPass)
 }
 
 passwordValidate = function (firstPass, secondPass) {
-
-  //Function to write a paragraph DIRECTLY
-  // in the page if the passwords dont match
- // var pass1 = document.getElementById('pass');
-  //var rptpass = document.getElementById('rptpass');
   var pass1 = document.getElementById(firstPass);
   var rptpass = document.getElementById(secondPass);
   if (pass1.value !== rptpass.value) {
@@ -54,241 +44,177 @@ passwordValidate = function (firstPass, secondPass) {
   }
   else {
     document.getElementById('passwordError').innerHTML = '';
-  //  if (passLength("rptpass") == true) {
-      document.getElementById("SignUpButton").disabled = false;
+    //  if (passLength("rptpass") == true) {
+    document.getElementById("SignUpButton").disabled = false;
     //}
 
   }
 }
 
-function sendForm(form){
-  //TODO:		Ändra namn på snopp och swag-variablen.
-  //alert("before swag declared");
-  var swag = {
-      email: form.email.value,
-      password: form.password.value,
-      first_name: form.firstname.value,
-      family_name: form.familyname.value,
-      gender: form.gender.value,
-      city: form.city.value,
-      country: form.country.value
-    }
-
-    //var snopp = serverstub.signUp(swag);
-    var xhr = new XMLHttpRequest();
-    var result = document.getElementById('test');
-    console.log(swag);
-    xhr.open('POST', '/sign_up', true);
-    xhr.setRequestHeader('content-type', 'application/json');
-    //xhr.send("email:" + swag.email, "password:"+swag.password, "first_name:"+swag.first_name, "family_name:"+swag.family_name,
-     //       "gender:"+swag.gender, "city");
-    swag=JSON.stringify(swag);
-    xhr.send(swag);
-    xhr.onreadystatechange = function()
-    {
-      if(this.readyState == 4) {
-        result.innerHTML = this.responseText;
-        console.log('success!');
-
-      } else {
-        result.innerHTML = 'Error';
-        console.log('hej');
-      }
-    }
-    return null;
-    //alert(snopp.success + " " + snopp.message);
-    //document.getElementById("test").innerHTML = snopp.success + " " + snopp.message;
-  }
-
-function logIn() {
-    var login = document.getElementById('loginInput').value;
-    var password = document.getElementById('passwordInput').value;
-    var userDetails = {
-      "email" : login,
-      "password" : password
-    }
-    console.log(userDetails);
-    console.log("After trying to console.log userdetials first");
-    userDetails = JSON.stringify(userDetails);
-    console.log(userDetails);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/sign_in', true);
-    xhr.setRequestHeader('content-type', 'application/json');
-    xhr.responseType = 'json';
-    xhr.send(userDetails);
-    xhr.onreadystatechange = function()
-    {
-      if(this.readyState == 4 && this.response['success'] == true) {
-        //result.innerHTML = this.responseText;
-        localStorage.setItem("token", this.response["token"]);
-        localStorage.setItem("email",login)
-        console.log('could log in');
-        profileView();
-        displayUserData();
-
-      } else {
-        //result.innerHTML = 'Error';
-        console.log('could not log in, readystate = ',this.readyState);
-        document.getElementById("passwordError").innerHTML = this.response["message"];
-      }
-    }
-   /* var response = serverstub.signIn(login, password);
-    //response: (success, message, data)
-
-    if (response.success == true) {
-        //logged in
-        //window.location.href = '#' + response.data;
-        localStorage.setItem("token", response.data);
-        localStorage.setItem("email", login);
-        profileView();
-      //  displayUserData();
-    } else {
-        //failed to log in
-        document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
-    }*/
+function sendFormCallback(response){
+  document.getElementById('test').innerHTML = response.responseText;
+  console.log('success!');
 }
 
-  function profileView() {
+function signUp(form){
 
-      //var token = window.location.hash.split('#')[1];
-      var token = localStorage.getItem("token");
-
-    //document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById('profileView').innerHTML;
-	window.onload();
-    //Profile view
-  //  document.getElementById("homebutton").onclick = home;
-
-    //document.getElementById("browsebutton").onclick = browse;
-    //document.getElementById("accountbutton").onclick = account;
-
-      //displayUserData();
-
-    //Logout
-    //document.getElementById("signoutbutton").onclick = logout;
+  var params = {
+    email: form.email.value,
+    password: form.password.value,
+    first_name: form.firstname.value,
+    family_name: form.familyname.value,
+    gender: form.gender.value,
+    city: form.city.value,
+    country: form.country.value
   }
 
-  //For the PROFILE VIEW
-  //Tab switching
+  var token = localStorage.getItem("token");
+  server.request(changePasswordCallback, "POST", '/sign_up', params, token);
+}
 
-  function changeUpperTab(tabId)
-  {
-    //document.getElementById(tabId).style.backgroundColor = "lightgreen";
-    document.getElementById("homebutton").className="deselected";
-    document.getElementById("browsebutton").className="deselected";
-    document.getElementById("accountbutton").className = "deselected";
-    document.getElementById("signoutbutton").className = "deselected";
-    document.getElementById(tabId).className="selected";
+/*            LOG IN JS           */
 
-    //Definitely not fulhax
-      if (tabId == "homebutton") {
-          switchTab("homeTab");
-      }
-      else if (tabId == "browsebutton") {
-          switchTab("browseTab");
-      }
-      else if (tabId == "accountbutton") {
-          switchTab("accountTab");
-      }
+function logInCallback(response){
+  if(response['success'] == true) {
+    localStorage.setItem("token", response["token"]);
+    console.log('could log in');
+    profileView();
+    requestUserData();
+  } else {
+    console.log('could not log in, readystate = ',response);
+    document.getElementById("passwordError").innerHTML = response["message"];
   }
+}
+
+function logIn() {
+  var login = document.getElementById('loginInput').value;
+  var password = document.getElementById('passwordInput').value;
+  var userDetails = {
+    "email" : login,
+    "password" : password
+  }
+
+  localStorage.setItem("email", login);
+  server.request(logInCallback, "POST", '/sign_in', userDetails);
+}
+
+function profileView() {
+
+  var token = localStorage.getItem("token");
+  window.onload();
+
+}
+
+/*            PROFILE VIEW JS           */
+//Tab switching
+
+function changeUpperTab(tabId)
+{
+  //document.getElementById(tabId).style.backgroundColor = "lightgreen";
+  document.getElementById("homebutton").className="deselected";
+  document.getElementById("browsebutton").className="deselected";
+  document.getElementById("accountbutton").className = "deselected";
+  document.getElementById("signoutbutton").className = "deselected";
+  document.getElementById(tabId).className="selected";
+
+  //Definitely not fulhax
+  if (tabId == "homebutton") {
+    switchTab("homeTab");
+  }
+  else if (tabId == "browsebutton") {
+    switchTab("browseTab");
+  }
+  else if (tabId == "accountbutton") {
+    switchTab("accountTab");
+  }
+}
+
 
 function switchTab(tabClass) {
-    document.getElementById("homeTab").style.display = "none";
-    document.getElementById("browseTab").style.display = "none";
-    document.getElementById("accountTab").style.display = "none";
-    document.getElementById(tabClass).style.display = "block";
+  document.getElementById("homeTab").style.display = "none";
+  document.getElementById("browseTab").style.display = "none";
+  document.getElementById("accountTab").style.display = "none";
+  document.getElementById(tabClass).style.display = "block";
 
+}
+
+function changePasswordCallback(response){
+  if(response['success'] == true)
+  {
+    document.getElementById("passwordError").innerHTML = response["message"];
+    console.log('Password changed');
+  }
+  else
+  {
+    document.getElementById("passwordError").innerHTML = response["message"];
+  }
 }
 
 function changeThisPassword(dataObject) {
-    var toSend = {
-        old_password: dataObject.oldpassword.value,
-        new_password: dataObject.newpassword.value
-    };
-    toSend = JSON.stringify(toSend);
-	var token = localStorage.getItem("token");
-
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/change_password', true);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.setRequestHeader('token', token);
-  xhr.responseType = 'json';
-  xhr.send(toSend);
-  xhr.onreadystatechange = function()
-  {
-    if(this.readyState == 4 && this.response['success'] == true)
-    {
-      //result.innerHTML = this.responseText;
-      document.getElementById("passwordError").innerHTML = this.response["message"];
-      console.log('Password changed');
-    }
-    else
-    {
-      //result.innerHTML = 'Error';
-      console.log('could not log in, readystate = ',this.readyState);
-      document.getElementById("passwordError").innerHTML = this.response["message"];
-	/*var response = serverstub.changePassword(token, toSend.oldPassword,
-		toSend.newPassword);
-	document.getElementById("passwordError").innerHTML = response.success + " " + response.message;
-  */
-    }
-  }
+  var params = {
+    old_password: dataObject.oldpassword.value,
+    new_password: dataObject.newpassword.value
+  };
+  var token = localStorage.getItem("token");
+  server.request(changePasswordCallback, "POST", '/change_password', params, token);
 }
 
 function signOut() {
-	//var msg = serverstub.signOut(localStorage.getItem("token"));
-  var token = localStorage.getItem("token");
-  console.log(token);
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/sign_out', true);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.setRequestHeader('token', token);
-  xhr.responseType = 'json';
-  xhr.send();
-  xhr.onreadystatechange = function()
-  {
-    if(this.readyState == 4 && this.response['success'] == true)
-    {
-      localStorage.removeItem("token");
-      console.log('Logged out successfully');
-      window.onload();
-    }
-    else
-    {
-      console.log('could not log in, readystate = ',this.readyState);
-      //document.getElementById("passwordError").innerHTML = this.response["message"];
-
-	//alert(msg.success +" " + msg.message);
-	//window.onload();
-    }
-  }
+  var userToken = localStorage.getItem("token");
+  localStorage.removeItem("token");
+  server.request(window.onload, "POST", '/sign_out', {}, userToken);
 }
 
-function displayUserData() {
-	var userToken = localStorage.getItem("token");
-	var response = serverstub.getUserDataByToken(userToken);
-	var data = response.data;
-	/*document.getElementById("userInfo").innerHTML = response.success +
-		" " + response.message + " " + response.data.firstname;*/
-	document.getElementById("userInfo").innerHTML = "<b>Name:</b>"
-		+ " " + "<p>" + data.firstname + " " + data.familyname
-    + "</p><br>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p><br>"
-    + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
+function requestUserData() {
+  var userToken = localStorage.getItem("token");
+  server.request(userDataCallback, "GET", '/get_user_data_by_token', {}, userToken);
+}
 
-	/*document.getElementById("userInfo").innerHTML = "<b>Location</b>" + "<p>"
-		data.city + "," + data.country + "</p>";*/
+function userDataCallback(response) {
+
+  var data = response;
+
+  document.getElementById("userInfo").innerHTML = "<b>Name:</b>"
+  + " " + "<p>" + data.firstname + " " + data.familyname
+  + "</p><br>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p><br>"
+  + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
+
 }
 
 
 function pressPost (){
 
   var token = localStorage.getItem("token");
-  var message = document.getElementById('messageField').value;
-  var email =  localStorage.getItem("email");
-  var result = serverstub.postMessage(token, message, email);
-  console.log(result);
 
-  pressReload();
+  var params = {
+    email: localStorage.getItem("email"),
+    message: document.getElementById('messageField').value
+  }
+
+  server.request(requestUserMessages, "POST", '/post_message', params, token);
+
 }
+
+function requestUserMessages(){
+  var token = localStorage.getItem("token");
+
+  server.request(displayUserMessages, "GET", '/get_user_messages_by_token', {}, token);
+}
+
+function displayUserMessages(response){
+  var result = response;
+  var text = "";
+  var entries = document.getElementById("entries");
+  entries.innerHTML = "";
+
+  for (i = 0; i < result.messages.length; i++) {
+    var p = document.createElement("p");
+    p.innerText = result.messages[i].sender + " says: " + result.messages[i].message;
+    entries.appendChild(p);
+  }
+}
+
+
 function postMessagesOnOtherWall(){
 
   var token = localStorage.getItem("token");
@@ -300,33 +226,21 @@ function postMessagesOnOtherWall(){
   pressReloadWithEmail();
 }
 
-function pressReload (){
-  var result = serverstub.getUserMessagesByToken(localStorage.getItem("token"));
-  var text = "";
-  var entries = document.getElementById("entries");
-  entries.innerHTML = "";
-
-  for (i = 0; i < result.data.length; i++) {
-     var p = document.createElement("p");
-     p.innerText = result.data[i].writer + " says: " + result.data[i].content;
-     entries.appendChild(p);
- }
-}
 
 function pressReloadWithEmail (){
   var userEmail = localStorage.getItem('findemail');
   console.log(userEmail)
   var result = serverstub.getUserMessagesByEmail(localStorage.getItem("token"),
-    userEmail);
+  userEmail);
   var text = "";
   var entries = document.getElementById("otherWall");
   entries.innerHTML = "";
 
   for (i = 0; i < result.data.length; i++) {
-     var p = document.createElement("p");
-     p.innerText = result.data[i].writer + " says: " + result.data[i].content;
-     entries.appendChild(p);
- }
+    var p = document.createElement("p");
+    p.innerText = result.data[i].writer + " says: " + result.data[i].content;
+    entries.appendChild(p);
+  }
 }
 
 function findUserByEmail(userEmail) {
@@ -335,11 +249,11 @@ function findUserByEmail(userEmail) {
   localStorage.setItem('findemail', email)
   var response = serverstub.getUserDataByEmail(token, email);
   var data = response.data;
-//  document.getElementById("firstTab").innerHTML = "Helo"
+  //  document.getElementById("firstTab").innerHTML = "Helo"
 
   document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
-		+ " " + "<p>" + data.firstname + " " + data.familyname
-    + "</p>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p>"
-    + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
+  + " " + "<p>" + data.firstname + " " + data.familyname
+  + "</p>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p>"
+  + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
 
 }

@@ -105,7 +105,7 @@ def get_user_data_by_token():
     if (user["success"]):
         #print (user)
         return jsonify({"success": True, "Message":"User data retrieved", "email": user["email"],
-        "first_name":user["first_name"], "family_name":user["family_name"], "gender":user["gender"],
+        "firstname":user["first_name"], "familyname":user["family_name"], "gender":user["gender"],
          "city":user["city"], "country":user["country"]})
     else:
         return jsonify({"success":False, "message":"Could not find user"})
@@ -144,7 +144,7 @@ def get_user_messages_by_token():
         for e in asd["messages"]:
         #print(e)
             StringToReturn += e["sender"] + ":" + e["message"] + "|"
-        return jsonify({"success":True, "messages": StringToReturn})
+        return jsonify({"success":True, "messages": asd["messages"]})
     else:
         return jsonify({"success":False, "message":"Could not get messages"})
 
