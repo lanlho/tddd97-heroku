@@ -216,44 +216,43 @@ function displayUserMessages(response){
 
 
 function postMessagesOnOtherWall(){
+  var params = {
+    email: localStorage.getItem("findemail"),
+    message: document.getElementById('messageFieldTWO').value
+  }
+    var token = localStorage.getItem("token");
+    server.request(pressReloadWithEmail, "POST", '/post_message', params, token);
+  }
 
-  var token = localStorage.getItem("token");
-  var message = document.getElementById('messageFieldTWO').value;
-  var email =  localStorage.getItem("findemail");
-  var result = serverstub.postMessage(token, message, email);
-  console.log(result.success);
-
-  pressReloadWithEmail();
-}
-
-
-function pressReloadWithEmail (){
-  var userEmail = localStorage.getItem('findemail');
-  console.log(userEmail)
-  var result = serverstub.getUserMessagesByEmail(localStorage.getItem("token"),
-  userEmail);
-  var text = "";
+function pressReloadWithEmailCallback(response){
   var entries = document.getElementById("otherWall");
   entries.innerHTML = "";
 
-  for (i = 0; i < result.data.length; i++) {
+  for (i = 0; i < response.messages.length; i++) {
     var p = document.createElement("p");
-    p.innerText = result.data[i].writer + " says: " + result.data[i].content;
+    p.innerText = response.messages[i].sender + " says: " + response.messages[i].message;
     entries.appendChild(p);
   }
+}
+
+function pressReloadWithEmail (){
+  var userEmail = localStorage.getItem('findemail');
+  var userToken = localStorage.getItem("token");
+  server.request(pressReloadWithEmailCallback, "GET", '/get_user_messages_by_email/'+ userEmail, {}, userToken);
+}
+
+function findUserByEmailCallback(response){
+  
+  document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
+  + " " + "<p>" + response.firstname + " " + response.familyname
+  + "</p>" + "<b>Location</b>" + "<p>" + response.city + ", " + response.country + "</p>"
+  + "<b>Sex</b>" + "<p>" + response.gender + "</p>";
 }
 
 function findUserByEmail(userEmail) {
   var token = localStorage.getItem("token");
   var email = userEmail.userMail.value;
   localStorage.setItem('findemail', email)
-  var response = serverstub.getUserDataByEmail(token, email);
-  var data = response.data;
-  //  document.getElementById("firstTab").innerHTML = "Helo"
 
-  document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
-  + " " + "<p>" + data.firstname + " " + data.familyname
-  + "</p>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p>"
-  + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
-
+  server.request(findUserByEmailCallback, "GET", '/get_user_data_by_email/' + email, {}, token);
 }
