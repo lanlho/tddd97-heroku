@@ -228,7 +228,9 @@ function pressReloadWithEmailCallback(response){
   var entries = document.getElementById("otherWall");
   entries.innerHTML = "";
 
-  for (i = 0; i < response.messages.length; i++) {
+
+
+  for (i = 0; response.success && i < response.messages.length; i++) {
     var p = document.createElement("p");
     p.innerText = response.messages[i].sender + " says: " + response.messages[i].message;
     entries.appendChild(p);
@@ -241,18 +243,31 @@ function pressReloadWithEmail (){
   server.request(pressReloadWithEmailCallback, "GET", '/get_user_messages_by_email/'+ userEmail, {}, userToken);
 }
 
+
+function resetFindUserByEmailForm(){
+document.getElementById("otherUserInfo").innerHTML = "";
+}
+
 function findUserByEmailCallback(response){
-  
-  document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
-  + " " + "<p>" + response.firstname + " " + response.familyname
-  + "</p>" + "<b>Location</b>" + "<p>" + response.city + ", " + response.country + "</p>"
-  + "<b>Sex</b>" + "<p>" + response.gender + "</p>";
+  resetFindUserByEmailForm();
+  if(response['success'] == true) {
+    console.log('found user');
+    document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
+    + " " + "<p>" + response.firstname + " " + response.familyname
+    + "</p>" + "<b>Location</b>" + "<p>" + response.city + ", " + response.country + "</p>"
+    + "<b>Sex</b>" + "<p>" + response.gender + "</p>";
+  }
+
+    else {
+      console.log('could not find user, readystate = ',response);
+      document.getElementById("wrongUser").innerHTML = response["message"];
+      resetFindUserByEmailForm(message);
+    }
 }
 
 function findUserByEmail(userEmail) {
   var token = localStorage.getItem("token");
   var email = userEmail.userMail.value;
   localStorage.setItem('findemail', email)
-
   server.request(findUserByEmailCallback, "GET", '/get_user_data_by_email/' + email, {}, token);
 }

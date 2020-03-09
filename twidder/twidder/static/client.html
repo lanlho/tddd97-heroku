@@ -30,7 +30,7 @@
 
     <div class="signupBox"><br>
        <b> Sign up here </b>
-       <form action="javascript:void" method="get" onsubmit="sendForm(this)">
+       <form action="javascript:void" method="get" onsubmit="signUp(this)">
         <input type="email"  name="email" placeholder="Email" class="textBox" required><br>
         <input type="text" name="firstname" placeholder="First name" class="textBox" required><br>
         <input type="text" name="familyname" placeholder="Family name" class="textBox" required><br>
@@ -94,9 +94,10 @@
             <b>Find this other user!</b>
             <input type="email" name="userMail" placeholder="Email" class="textBox"
               id="thisCoolEmailAdress"\>
-            <input type="submit" name="Find User" \>
+            <input type="submit" value="Find User" onclick="resetFindUserByEmailForm()" \>
             </form>
             <div id="otherUserInfo"></div>
+            <p id="wrongUser"></p>
             </div>
 
 
