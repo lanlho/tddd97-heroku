@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 import database_helper
+from gevent.pywsgi import WSGIServer
+from geventwebsocket.handler import WebSocketHandler
 app = Flask(__name__)
 
 @app.route('/', methods=['GET','POST'])
@@ -105,7 +107,7 @@ def get_user_data_by_token():
     if (user["success"]):
         #print (user)
         return jsonify({"success": True, "Message":"User data retrieved", "email": user["email"],
-        "firstname":user["first_name"], "familyname":user["family_name"], "gender":user["gender"],
+        "first_name":user["first_name"], "family_name":user["family_name"], "gender":user["gender"],
          "city":user["city"], "country":user["country"]})
     else:
         return jsonify({"success":False, "message":"Could not find user"})
@@ -124,7 +126,7 @@ def get_user_data_by_email(email):
     user = database_helper.get_user_data_by_email(token, email)
     if (user["success"]):
             return jsonify({"success": True, "Message":"User data retrieved", "email": user["email"],
-            "firstname":user["first_name"], "familyname":user["family_name"], "gender":user["gender"],
+            "first_name":user["first_name"], "family_name":user["family_name"], "gender":user["gender"],
              "city":user["city"], "country":user["country"]})
     else:
         return jsonify({"success":False, "message":"Could not find user"})
@@ -199,8 +201,11 @@ def post_message():
 #sqlite3 database.db för att komma in i databasen och kunna köra kommandon/script
 #För att körad schema.sql, kör .read schema.sql
 
+#if __name__ == '__main__':
+    #app.run(debug=True, port=5000)
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    http_server = WSGIServer(('',5000), app, handler_class=WebSocketHandler)
+    http_server.serve_forever()
 #xhr.send(Json.stringify("data":"data"))
 #xhr.hearder("token":local.stodf)
 

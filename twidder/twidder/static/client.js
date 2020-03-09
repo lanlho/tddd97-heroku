@@ -7,6 +7,7 @@ window.onload = function () {
   else {
     document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
     requestUserData();
+    requestUserMessages();
   }
 };
 
@@ -175,7 +176,7 @@ function userDataCallback(response) {
   var data = response;
 
   document.getElementById("userInfo").innerHTML = "<b>Name:</b>"
-  + " " + "<p>" + data.firstname + " " + data.familyname
+  + " " + "<p>" + data.first_name + " " + data.family_name
   + "</p><br>" + "<b>Location</b>" + "<p>" + data.city + ", " + data.country + "</p><br>"
   + "<b>Sex</b>" + "<p>" + data.gender + "</p>";
 
@@ -245,7 +246,7 @@ function pressReloadWithEmail (){
 
 
 function resetFindUserByEmailForm(){
-document.getElementById("otherUserInfo").innerHTML = "";
+document.getElementById("otherUserInfo").innerHTML = " ";
 }
 
 function findUserByEmailCallback(response){
@@ -253,14 +254,14 @@ function findUserByEmailCallback(response){
   if(response['success'] == true) {
     console.log('found user');
     document.getElementById("otherUserInfo").innerHTML = "<b>Name:</b>"
-    + " " + "<p>" + response.firstname + " " + response.familyname
+    + " " + "<p>" + response.first_name + " " + response.family_name
     + "</p>" + "<b>Location</b>" + "<p>" + response.city + ", " + response.country + "</p>"
     + "<b>Sex</b>" + "<p>" + response.gender + "</p>";
   }
 
     else {
       console.log('could not find user, readystate = ',response);
-      document.getElementById("wrongUser").innerHTML = response["message"];
+      document.getElementById("otherUserInfo").innerHTML = response["message"];
       resetFindUserByEmailForm(message);
     }
 }
