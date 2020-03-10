@@ -6,10 +6,34 @@ window.onload = function () {
   }
   else {
     document.getElementsByTagName("BODY")[0].innerHTML = document.getElementById("profileView").innerHTML;
+    socketStuff();
     requestUserData();
     requestUserMessages();
+
   }
 };
+
+function socketStuff() {
+
+    ws = new WebSocket("ws://127.0.0.1:5000/api");
+    ws.onopen=function(){
+      ws.send(localStorage.getItem("token"));
+    }
+    /*ws.onmessage = function() {
+      logout();
+    }*/
+      //alert("test")
+    console.log("we are in websocket if")
+    ws.onmessage = function(event) {
+      if (event.data='logout'){
+        console.log("we got message and should log out");
+        ws.close();
+        signOut();
+      };
+    };
+
+}
+
 
 
 function passLength(pass, reptPass)
@@ -79,8 +103,10 @@ function logInCallback(response){
   if(response['success'] == true) {
     localStorage.setItem("token", response["token"]);
     console.log('could log in');
-    profileView();
+    //profileView();
+    window.onload();
     requestUserData();
+
   } else {
     console.log('could not log in, readystate = ',response);
     document.getElementById("passwordError").innerHTML = response["message"];
@@ -96,6 +122,7 @@ function logIn() {
   }
 
   localStorage.setItem("email", login);
+
   server.request(logInCallback, "POST", '/sign_in', userDetails);
 }
 
@@ -162,8 +189,8 @@ function changeThisPassword(dataObject) {
 
 function signOut() {
   var userToken = localStorage.getItem("token");
-  localStorage.removeItem("token");
   server.request(window.onload, "POST", '/sign_out', {}, userToken);
+  localStorage.removeItem("token");
 }
 
 function requestUserData() {

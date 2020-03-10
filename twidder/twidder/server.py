@@ -4,9 +4,41 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 app = Flask(__name__)
 
+WebSocketDictionary = {}
+#{"here be token":"here be ws"}
+CurrentWs = None
+
 @app.route('/', methods=['GET','POST'])
 def index():
     return app.send_static_file('client.html')
+
+@app.route('/api')
+def api():
+    if request.environ.get("wsgi.websocket"):
+        ws = request.environ["wsgi.websocket"]
+        token = ws.receive()
+        email = database_helper.getEmailByToken(token)
+        print (email)
+        if email is not None:
+            if email in WebSocketDictionary:
+                print("Email existed in dict")
+                oldsocket = WebSocketDictionary[email]
+                try:
+                    oldsocket.send('logout')
+                except:
+                    print('fail logout')
+                    return 'fail logout'
+                print(WebSocketDictionary[email])
+                del WebSocketDictionary[email]
+            WebSocketDictionary[email] = ws
+            #print(WebSocketDictionary)
+        while True:
+            try:
+                ws.receive()
+            except:
+                print('websocket died')
+                return 'died'
+    return 'w7e'
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -18,6 +50,7 @@ def sign_in():
     user = database_helper.match_email_to_password(data['email'], data['password'])
     print("User: ",user['success'], " : ", user["message"])
     if (user["success"] is True):
+        print(WebSocketDictionary)
         return jsonify({"success":True, "message":"User signed in successfully", "token":user["token"]})
     else:
         return jsonify({"success":False, "message":"something went wrong"})
@@ -194,6 +227,7 @@ def post_message():
             return jsonify({"success": False, "message": "No such user."})
     else:
         return jsonify({"success": False, "message": "You are not signed in."})
+
 
     #return database_helper.get_user_messages_by_email(token, findEmail)
 

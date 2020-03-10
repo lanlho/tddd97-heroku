@@ -4,6 +4,18 @@ import string
 import random
 
 
+def getEmailByToken(token):
+    connection = init()
+    try:
+        returnedFromDB = connection.execute("SELECT email FROM user WHERE token = ? ", [token]  )
+        tmp_user = returnedFromDB.fetchall()[0]
+        if (tmp_user is not None):
+            return tmp_user[0]
+        else:
+            return
+    except:
+        return
+
 def find_user(findEmail):
     connection = init()
     try:
@@ -113,7 +125,7 @@ def sign_out(our_token):
     cursor = connection.cursor()
 
     try:
-        print(our_token)
+        print("This is our token" + our_token)
         cur = connection.execute("SELECT token FROM user where token = ?",[our_token])
 
         if (cur.fetchone() is None):
