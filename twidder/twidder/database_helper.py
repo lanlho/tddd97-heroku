@@ -4,6 +4,22 @@ import string
 import random
 
 
+
+def exists_token(email):
+    connection = init()
+    try:
+        returnedFromDB = connection.execute("SELECT token FROM user WHERE email = ? ", [email]  )
+    except:
+        print("Error!")
+    tmp = returnedFromDB.fetchall()[0]
+    if (tmp[0] != None):
+        print("User is logged in: ",tmp[0] )
+        return True
+    else:
+        print("User isn't logged in")
+        return False
+
+        
 def getEmailByToken(token):
     connection = init()
     try:

@@ -22,14 +22,14 @@ def api():
         if email is not None:
             if email in WebSocketDictionary:
                 print("Email existed in dict")
-                oldsocket = WebSocketDictionary[email]
-                try:
-                    oldsocket.send('logout')
-                except:
-                    print('fail logout')
-                    return 'fail logout'
-                print(WebSocketDictionary[email])
-                del WebSocketDictionary[email]
+                #oldsocket = WebSocketDictionary[email]
+                #try:
+                #    oldsocket.send('logout')
+                #except:
+                #    print('fail logout')
+                #    return 'fail logout'
+                #print(WebSocketDictionary[email])
+                #del WebSocketDictionary[email]
             WebSocketDictionary[email] = ws
             #print(WebSocketDictionary)
         while True:
@@ -47,6 +47,12 @@ def sign_in():
     password = data['password']
     found_user = database_helper.find_user(email)
     print(found_user)
+    if (database_helper.exists_token(email)):
+        WebSocketDictionary[email].send('logout')
+        WebSocketDictionary[email].close()
+        del WebSocketDictionary[email]
+
+
     user = database_helper.match_email_to_password(data['email'], data['password'])
     print("User: ",user['success'], " : ", user["message"])
     if (user["success"] is True):
@@ -94,11 +100,16 @@ def sign_up():
 def sign_out():
     token = request.headers.get('token')
     print("This is the token we're sending: ", token)
+    email = database_helper.getEmailByToken(token)
     status = database_helper.sign_out(token)
     if (status["success"]):
+        WebSocketDictionary[email].close()
+        WebSocketDictionary[email].send('logout')
+        del WebSocketDictionary[email]
         return jsonify({"success": True, "message": "Successfully signed out."})
     else:
         print(status["message"])
+        WebSocketDictionary[email].close()
         return jsonify({"success": False, "message": "You are not signed in."})
 
 #--------------------------------------------------------------

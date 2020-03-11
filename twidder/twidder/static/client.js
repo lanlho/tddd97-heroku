@@ -15,7 +15,7 @@ window.onload = function () {
 
 function socketStuff() {
 
-    ws = new WebSocket("ws://127.0.0.1:5000/api");
+  var  ws = new WebSocket("ws://127.0.0.1:5000/api");
     ws.onopen=function(){
       ws.send(localStorage.getItem("token"));
     }
@@ -27,8 +27,10 @@ function socketStuff() {
     ws.onmessage = function(event) {
       if (event.data='logout'){
         console.log("we got message and should log out");
-        ws.close();
-        signOut();
+        //ws.close();
+        //signOut();
+        localStorage.removeItem("token");
+        window.onload();
       };
     };
 
@@ -105,7 +107,7 @@ function logInCallback(response){
     console.log('could log in');
     //profileView();
     window.onload();
-    requestUserData();
+    //requestUserData();
 
   } else {
     console.log('could not log in, readystate = ',response);
@@ -122,7 +124,7 @@ function logIn() {
   }
 
   localStorage.setItem("email", login);
-
+  socketStuff();
   server.request(logInCallback, "POST", '/sign_in', userDetails);
 }
 
