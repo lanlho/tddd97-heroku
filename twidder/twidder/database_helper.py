@@ -19,7 +19,7 @@ def exists_token(email):
         print("User isn't logged in")
         return False
 
-        
+
 def getEmailByToken(token):
     connection = init()
     try:
@@ -299,7 +299,7 @@ def init():
     con = None
     #schemaScript = open('schema.sql','r').read()
     try:
-        con = sqlite3.connect('database.db')
+        con = sqlite3.connect('twidder/twidder/database.db')
         print ("Opened database successfully :O")
 
         #con.executescript(schemaScript)
