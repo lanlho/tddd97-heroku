@@ -48,11 +48,10 @@ def sign_in():
     password = data['password']
     found_user = database_helper.find_user(email)
     print(found_user)
-    if (database_helper.exists_token(email)):
+    if (database_helper.exists_token(email) and email in WebSocketDictionary.keys()):
         WebSocketDictionary[email].send('logout')
         WebSocketDictionary[email].close()
         del WebSocketDictionary[email]
-
 
     user = database_helper.match_email_to_password(data['email'], data['password'])
     print("User: ",user['success'], " : ", user["message"])
