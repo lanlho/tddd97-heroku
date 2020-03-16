@@ -242,5 +242,5 @@ def post_message():
 
 
 if __name__ == '__main__':
-    http_server = WSGIServer(('',80), app, handler_class=WebSocketHandler)
+    http_server = WSGIServer(("127.0.0.1",80), app, handler_class=WebSocketHandler)
     http_server.serve_forever()
