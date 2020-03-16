@@ -12,7 +12,7 @@ def exists_token(email):
     except:
         print("Error!")
     tokens = returnedFromDB.fetchall()
-    if (tokens != None):
+    if (len(tokens) == 0):
         tmp = tokens[0]
     else:
         tmp[0] = None;
