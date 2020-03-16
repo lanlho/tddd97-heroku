@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 import database_helper
 from gevent.pywsgi import WSGIServer
