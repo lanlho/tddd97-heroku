@@ -15,7 +15,7 @@ window.onload = function () {
 
 function socketStuff() {
 
-  var  ws = new WebSocket("ws://127.0.0.1:5000/api");
+  var  ws = new WebSocket("wss://twidder-lana.herokuapp.com/api");
     ws.onopen=function(){
       ws.send(localStorage.getItem("token"));
     }
