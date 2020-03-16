@@ -13,10 +13,10 @@ def exists_token(email):
         print("Error!")
     tokens = returnedFromDB.fetchall()
     if (len(tokens) != 1):
-        tmp = tokens[0]
         print("User isn't logged in")
         return False
 
+    tmp = tokens[0]
     print("User is logged in: ",tmp[0] )
     return True
 
