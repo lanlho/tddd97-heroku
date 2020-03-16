@@ -11,7 +11,11 @@ def exists_token(email):
         returnedFromDB = connection.execute("SELECT token FROM user WHERE email = ? ", [email]  )
     except:
         print("Error!")
-    tmp = returnedFromDB.fetchall()[0]
+    tokens = returnedFromDB.fetchall()
+    if (tokens != None):
+        tmp = tokens[0]
+    else:
+        tmp[0] = None;
     if (tmp[0] != None):
         print("User is logged in: ",tmp[0] )
         return True
