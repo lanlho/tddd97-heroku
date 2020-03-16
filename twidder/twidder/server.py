@@ -105,7 +105,6 @@ def sign_out():
     status = database_helper.sign_out(token)
     if (status["success"]):
         WebSocketDictionary[email].close()
-        WebSocketDictionary[email].send('logout')
         del WebSocketDictionary[email]
         return jsonify({"success": True, "message": "Successfully signed out."})
     else:

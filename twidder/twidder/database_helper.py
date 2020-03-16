@@ -304,8 +304,8 @@ def init():
 
         #con.executescript(schemaScript)
         #print("schema.sql completed succesfully")
-    except Error as e:
-        print(e)
+    except:
+        print("Error opening the database")
     return con
 
 
