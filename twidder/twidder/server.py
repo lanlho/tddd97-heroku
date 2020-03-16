@@ -240,22 +240,7 @@ def post_message():
         return jsonify({"success": False, "message": "You are not signed in."})
 
 
-    #return database_helper.get_user_messages_by_email(token, findEmail)
 
-#export FLASK_APP=server.py BEHÖVER GÖRAS VID VARJE START
-#sqlite3 database.db för att komma in i databasen och kunna köra kommandon/script
-#För att körad schema.sql, kör .read schema.sql
-
-#if __name__ == '__main__':
-    #app.run(debug=True, port=5000)
 if __name__ == '__main__':
-    http_server = WSGIServer(('',5000), app, handler_class=WebSocketHandler)
+    http_server = WSGIServer(('',80), app, handler_class=WebSocketHandler)
     http_server.serve_forever()
-#xhr.send(Json.stringify("data":"data"))
-#xhr.hearder("token":local.stodf)
-
-#request.headers('w/e') (w/e = typ token)
-#if w/e not in request.headers()
-#else
-
-#Starta Postman från Downloads ////Adam
