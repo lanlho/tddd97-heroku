@@ -12,17 +12,13 @@ def exists_token(email):
     except:
         print("Error!")
     tokens = returnedFromDB.fetchall()
-    if (len(tokens) == 0):
+    if (len(tokens) != 1):
         tmp = tokens[0]
-    else:
-        tmp[0] = None;
-    if (tmp[0] != None):
-        print("User is logged in: ",tmp[0] )
-        return True
-    else:
         print("User isn't logged in")
         return False
 
+    print("User is logged in: ",tmp[0] )
+    return True
 
 def getEmailByToken(token):
     connection = init()
